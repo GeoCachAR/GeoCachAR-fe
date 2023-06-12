@@ -20,7 +20,7 @@ export default function SignUp({ navigation }) {
         title="Sign Up"
         accessibilityLabel="Sign Up"
         onPress={() => {
-          navigation.navigate('GeoCachAR');
+          navigation.navigate('Navigation');
         }}
       />
     </View>
