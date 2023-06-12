@@ -5,6 +5,7 @@ import LogIn from './components/LogIn';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 import Navigation from './components/Navigation';
+import MapList from './components/MapList';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="Sign Up" component={SignUp} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Navigation" component={Navigation} />
+        <Stack.Screen name="Maps" component={MapList} />
       </Stack.Navigator>
     </NavigationContainer>
   );
