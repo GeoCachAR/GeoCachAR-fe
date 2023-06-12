@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { Text, View, Button } from 'react-native';
+import styles from '../StyleSheet';
 
 export default function LandingPage({ navigation }) {
   return (
@@ -30,22 +31,22 @@ export default function LandingPage({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    paddingTop: 30,
-  },
-  logo: {
-    fontSize: 40,
-    fontWeight: 600,
-  },
-  tagline: {
-    margin: 16,
-    fontSize: 30,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+//   button: {
+//     paddingTop: 30,
+//   },
+//   logo: {
+//     fontSize: 40,
+//     fontWeight: 600,
+//   },
+//   tagline: {
+//     margin: 16,
+//     fontSize: 30,
+//   },
+// });

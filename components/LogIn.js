@@ -1,18 +1,30 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, TextInput, View, Button } from 'react-native';
+import styles from '../StyleSheet';
 
-export default function LogIn() {
+export default function LogIn({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>Log In page</Text>
+      <Text style={styles.logo}>GeoCachAR</Text>
+      <Text style={styles.tagline}>Enter Log In Details</Text>
+      <View>
+        <Text style={styles.formText}>Enter email:</Text>
+        <TextInput style={styles.input} placeholder="Enter email" />
+        <Text style={styles.formText}>Enter password:</Text>
+        <TextInput
+          style={styles.input}
+          secureTextEntry={true}
+          placeholder="Enter email"
+        />
+      </View>
+      <Button
+        title="Log In"
+        accessibilityLabel="Log in"
+        onPress={() => {
+          navigation.navigate('GeoCachAR');
+        }}
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
