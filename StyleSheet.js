@@ -71,6 +71,40 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 30,
   },
+  mapContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  map: {
+    width: "100%",
+    height: "35%",
+  },
+  mapScreenDetails: {
+    paddingTop: 5,
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  mapScreenInput: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    paddingLeft: 50,
+    width: 200,
+  },
+  mapScreenNumber: {
+    paddingTop: 18,
+    paddingLeft: 45,
+    paddingRight: 20,
+    fontSize: 20,
+  },
+  mapScreenBtn: {
+    paddingTop: 10,
+    fontSize: 20,
+  },
+  launchCamera: {
+    marginTop: 20,
+  },
 });
 
 export default styles;
