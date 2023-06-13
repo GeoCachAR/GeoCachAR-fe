@@ -1,16 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   homeContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     paddingTop: 20,
   },
   userProfileScroll: {
@@ -63,8 +63,14 @@ const styles = StyleSheet.create({
   },
   userProfileBtnView: {
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
+  },
+  availableLocations: {
+    textAlign: "center",
+    marginTop: 15,
+    marginBottom: 15,
+    fontSize: 30,
   },
 });
 
-export default styles
+export default styles;
