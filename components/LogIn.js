@@ -20,11 +20,9 @@ export default function LogIn({ navigation }) {
         title="Log In"
         accessibilityLabel="Log in"
         onPress={() => {
-          navigation.navigate('GeoCachAR');
+          navigation.navigate('Navigation');
         }}
       />
     </View>
   );
 }
-
-
