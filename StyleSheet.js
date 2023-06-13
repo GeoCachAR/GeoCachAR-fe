@@ -13,6 +13,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 20,
   },
+  userProfileScroll: {
+    flex: 1,
+    marginBottom: 50,
+  },
   button: {
     paddingTop: 30,
   },
@@ -27,6 +31,17 @@ const styles = StyleSheet.create({
   taglineHome: {
     margin: 16,
     fontSize: 20,
+  },
+  userProfileEntry: {
+    margin: 16,
+    marginLeft: 30,
+    fontSize: 20,
+  },
+  userProfileHeader: {
+    marginTop: 100,
+    marginLeft: 30,
+    fontSize: 25,
+    fontWeight: 600,
   },
   input: {
     height: 40,
@@ -45,6 +60,10 @@ const styles = StyleSheet.create({
   homeBtnView: {
     marginTop: 10,
     width: 300,
+  },
+  userProfileBtnView: {
+    marginTop: 10,
+    alignItems: 'center',
   },
 });
 
