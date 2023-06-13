@@ -1,16 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   homeContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     paddingTop: 20,
   },
   userProfileScroll: {
@@ -63,8 +63,48 @@ const styles = StyleSheet.create({
   },
   userProfileBtnView: {
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
+  },
+  availableLocations: {
+    textAlign: "center",
+    marginTop: 15,
+    marginBottom: 15,
+    fontSize: 30,
+  },
+  mapContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  map: {
+    width: "100%",
+    height: "35%",
+  },
+  mapScreenDetails: {
+    paddingTop: 5,
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  mapScreenInput: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    paddingLeft: 50,
+    width: 200,
+  },
+  mapScreenNumber: {
+    paddingTop: 18,
+    paddingLeft: 45,
+    paddingRight: 20,
+    fontSize: 20,
+  },
+  mapScreenBtn: {
+    paddingTop: 10,
+    fontSize: 20,
+  },
+  launchCamera: {
+    marginTop: 20,
   },
 });
 
-export default styles
+export default styles;

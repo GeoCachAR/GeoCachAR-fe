@@ -1,16 +1,16 @@
-import { Text, ScrollView, Button, View } from 'react-native';
-import styles from '../StyleSheet';
-import { useState } from 'react';
+import { Text, ScrollView, Button, View } from "react-native";
+import styles from "../StyleSheet";
+import { useState } from "react";
 
 export default function UserProfile() {
-const [username, setUsername] = useState('Captain Hook')
-const [email, setEmail] = useState('arghhh@piratemail.com')
-// Password probably won't be kept in state like this, but just for setup/design purposes
-const [password, setPassword] = useState('*********');
-// These state may change or be moved and just set up here for set up
-const [currentMap, setMap] = useState('Australia')
-const [currentMapPercentage, setCurrentMapPercentage] = useState('20%')
-const [completedMaps, setCompletedMaps] = useState(['London ','Manchester'])
+  const [username, setUsername] = useState("Captain Hook");
+  const [email, setEmail] = useState("arghhh@piratemail.com");
+  // Password probably won't be kept in state like this, but just for setup/design purposes
+  const [password, setPassword] = useState("*********");
+  // These state may change or be moved and just set up here for set up
+  const [currentMap, setMap] = useState("Australia");
+  const [currentMapPercentage, setCurrentMapPercentage] = useState("20%");
+  const [completedMaps, setCompletedMaps] = useState(["London ", "Manchester"]);
 
   return (
     <ScrollView style={styles.userProfileScroll}>
@@ -41,4 +41,3 @@ const [completedMaps, setCompletedMaps] = useState(['London ','Manchester'])
     </ScrollView>
   );
 }
-
