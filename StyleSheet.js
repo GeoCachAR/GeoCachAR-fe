@@ -41,7 +41,10 @@ const styles = StyleSheet.create({
   homeImage: {
     width: 300,
     height: 250,
-    resizeMode: 'stretch',
+  },
+  homeBtnView: {
+    marginTop: 10,
+    width: 300,
   },
 });
 

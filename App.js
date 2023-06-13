@@ -16,8 +16,15 @@ export default function App() {
         <Stack.Screen name="GeoCachAR" component={LandingPage} />
         <Stack.Screen name="Log In" component={LogIn} />
         <Stack.Screen name="Sign Up" component={SignUp} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Navigation" component={Navigation} />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+        />
+        <Stack.Screen
+          name="Navigation"
+          component={Navigation}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Maps" component={MapList} />
       </Stack.Navigator>
     </NavigationContainer>

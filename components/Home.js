@@ -1,9 +1,9 @@
 import { Text, View, Image, Button } from 'react-native';
-import { Link } from '@react-navigation/native';
 import styles from '../StyleSheet';
-import MapList from './MapList';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Home() {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.homeContainer}>
@@ -13,9 +13,21 @@ export default function Home() {
       ></Image>
       <Text style={styles.logo}>Welcome to GeoCachAR</Text>
       <Text style={styles.taglineHome}>What would you like to do...</Text>
-      <Button title="Resume current treasure hunt" />
-      <Link to={{ screen: 'Maps' }}>View all treasure hunts</Link>
-      <Button title="View my profile" />
+      <View style={styles.homeBtnView}>
+        <Button title="Resume current treasure hunt" />
+      </View>
+      <View style={styles.homeBtnView}>
+        <Button
+          title="View all treasure hunts"
+          onPress={() => navigation.navigate('Maps')}
+        />
+      </View>
+      <View style={styles.homeBtnView}>
+        <Button
+          title="View my profile"
+          onPress={() => navigation.navigate('Profile')}
+        />
+      </View>
     </View>
   );
 }
