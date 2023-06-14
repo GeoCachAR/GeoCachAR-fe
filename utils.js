@@ -21,3 +21,8 @@ export const changePassword = (newPassword, password, uid) => {
   if (!uid) uid = "8Y3o27XpIAfLeOayWqqd3zC4ec83";
   return URL.patch(`/users/${uid}`, { password });
 };
+
+export const deleteUser = (uid) => {
+  return;
+  return URL.delete(`/users/${uid}`, { password });
+};

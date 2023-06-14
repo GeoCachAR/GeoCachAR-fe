@@ -1,7 +1,8 @@
-import { Text, ScrollView, Button, View } from "react-native";
+import { Text, ScrollView, Button, View, Alert } from "react-native";
 import styles from "../StyleSheet";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { deleteUser } from "../utils";
 
 export default function UserProfile({ username, password }) {
   const [email, setEmail] = useState("arghhh@piratemail.com");
@@ -25,7 +26,10 @@ export default function UserProfile({ username, password }) {
       </View>
       <Text style={styles.userProfileEntry}>Email: {email}</Text>
       <View style={styles.userProfileBtnView}>
-        <Button title="Update" />
+        <Button
+          title="Update"
+          onPress={() => Alert.alert("Please contact the developer")}
+        />
       </View>
       <Text style={styles.userProfileEntry}>Password: {"********"}</Text>
       <View style={styles.userProfileBtnView}>
@@ -37,6 +41,23 @@ export default function UserProfile({ username, password }) {
           }}
         />
       </View>
+      <Button
+        title="Delete Account"
+        onPress={() => {
+          return Alert.alert(
+            "Delete your account?",
+            "Are you sure you'd like to delete your account? This action is irreversible",
+            [
+              {
+                text: "Yes",
+                onPress: () => deleteUser(),
+              },
+              { text: "No", style: "cancel" },
+            ],
+            { cancelable: true }
+          );
+        }}
+      />
       <Text style={styles.userProfileHeader}>Currently Playing:</Text>
       <Text style={styles.userProfileEntry}>
         {currentMap} {currentMapPercentage}
