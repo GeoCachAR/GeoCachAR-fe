@@ -4,69 +4,95 @@ import { useState } from "react";
 import { changePassword } from "../utils.js";
 
 export default function ChangePassword({ password, setPassword }) {
-    const [currPassword, setCurrPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [pClass, setPClass] = useState(true);
+  const [currPassword, setCurrPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [pClass, setPClass] = useState({
+    currentPassword: true,
+    newPassword: true,
+    confirmPassword: true,
+  });
 
-    function handleChange(text, func) {
-        func(text);
+  function handleChange(text, func) {
+    func(text);
+  }
+  function handleSubmit() {
+    setPClass({
+      currentPassword: true,
+      newPassword: true,
+      confirmPassword: true,
+    });
+    if (currPassword !== password) {
+      setPClass((currentP) => {
+        return { ...currentP, currentPassword: false };
+      });
+    } else if (password === newPassword) {
+      setPClass((currentP) => {
+        return { ...currentP, newPassword: false };
+      });
     }
-    function handleSubmit() {
-        setPClass(true);
-        if (newPassword !== confirmPassword) {
-            setPClass(false);
-            console.log("Passwords must match");
-        } else if (password === newPassword) {
-            setPClass(false);
-            console.log("New password can't be the same as current password");
+    if (newPassword !== confirmPassword) {
+      setPClass((currentP) => {
+        return { ...currentP, confirmPassword: false };
+      });
+    }
+    if (Object.values(pClass).every((x) => x)) {
+      changePassword(newPassword)
+        .then(() => {
+          setPassword(newPassword);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  return (
+    <View>
+      <Text style={styles.passwordTextFeild}>
+        {password} {currPassword} {newPassword} {confirmPassword}
+      </Text>
+
+      <Text style={true ? styles.passwordError : ""}>Current Password: </Text>
+      <TextInput
+        style={true ? styles.passwordInputField : ""}
+        onChangeText={(text) => handleChange(text, setCurrPassword)}
+      ></TextInput>
+      <Text
+        style={
+          pClass.currentPassword ? styles.passwordError : styles.passwordIsError
         }
-        changePassword(newPassword)
-            .then(() => {
-                setPassword(newPassword);
-            })
-            .catch(() => {});
-    }
+      >
+        Incorrect Password
+      </Text>
 
-    return (
-        <View>
-            <Text style={styles.passwordTextFeild}>
-                {password} {currPassword} {newPassword} {confirmPassword}
-            </Text>
+      <Text style={styles.passwordTextFeild}>New Password: </Text>
+      <TextInput
+        style={true ? styles.passwordInputField : ""}
+        onChangeText={(text) => handleChange(text, setNewPassword)}
+      ></TextInput>
+      <Text
+        style={
+          pClass.newPassword ? styles.passwordError : styles.passwordIsError
+        }
+      >
+        New password can't be the same as current password
+      </Text>
 
-            <Text style={pClass ? styles.passwordError : ""}>
-                Current Password:{" "}
-            </Text>
-            <TextInput
-                style={pClass ? styles.passwordInputField : ""}
-                onChangeText={(text) => handleChange(text, setCurrPassword)}
-            ></TextInput>
-            <Text style={pClass ? styles.passwordError : ""}>
-                This is stext that will be hidden mmaybe
-            </Text>
+      <Text style={styles.passwordTextFeild}>Confirm Password: </Text>
+      <TextInput
+        style={true ? styles.passwordInputField : ""}
+        onChangeText={(text) => handleChange(text, setConfirmPassword)}
+      ></TextInput>
+      <Text
+        style={
+          pClass.confirmPassword ? styles.passwordError : styles.passwordIsError
+        }
+      >
+        Passwords must match
+      </Text>
 
-            <Text style={styles.passwordTextFeild}>New Password: </Text>
-            <TextInput
-                style={pClass ? styles.passwordInputField : ""}
-                onChangeText={(text) => handleChange(text, setNewPassword)}
-            ></TextInput>
-            <Text style={pClass ? styles.passwordError : ""}>
-                This is stext that will be hidden mmaybe
-            </Text>
-
-            <Text style={styles.passwordTextFeild}>Confirm Password: </Text>
-            <TextInput
-                style={pClass ? styles.passwordInputField : ""}
-                onChangeText={(text) => handleChange(text, setConfirmPassword)}
-            ></TextInput>
-            <Text style={pClass ? styles.passwordError : ""}>
-                This is stext that will be hidden mmaybe
-            </Text>
-
-            <Button
-                title="Press me"
-                onPress={handleSubmit}
-            ></Button>
-        </View>
-    );
+      <Button title="Press me" onPress={handleSubmit}></Button>
+    </View>
+  );
 }
