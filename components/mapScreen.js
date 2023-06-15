@@ -20,6 +20,7 @@ export default function MapScreen({ mapId }) {
 
     useEffect(() => {
         fetchMap(mapId).then((newMap) => {
+            console.log(newMap);
             setMap(newMap);
         });
     }, []);
