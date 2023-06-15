@@ -9,20 +9,28 @@ import {
 import styles from "../StyleSheet";
 import MapView, { Marker } from "react-native-maps";
 import { useEffect, useState } from "react";
-import { fetchMap } from "../utils";
+import { fetchMap, getUser } from "../utils";
 
-const testMapScreenArray = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 export default function MapScreen({ mapId }) {
     mapId = "100";
     const [congratsMessage, setCongratsMessage] = useState("");
     const [map, setMap] = useState(false);
+    const [wpNumbers, setWpNumbers] = useState(false)
+    const [numberInputs, setNumberInputs] = useState()
 
     useEffect(() => {
         fetchMap(mapId).then((newMap) => {
-            console.log(newMap);
             setMap(newMap);
-        });
+            return getUser()        
+        })
+       .then((user) => {
+          setWpNumbers(user.current_maps[mapId])
+          return user.current_maps[mapId]
+        }).then((wpWaypoints)=> {
+          setNumberInputs(Object.keys(wpWaypoints).reduce((numInputs, key) => {
+          return {...numInputs,[key]:""}
+        }, {}))})
     }, []);
 
     return (
@@ -39,7 +47,7 @@ export default function MapScreen({ mapId }) {
                 }}
             >
                 {map
-                    ? map.waypoints.map((waypoint, index) => {
+                    ? Object.entries(map.waypoints).map(([index, waypoint]) => {
                           return (
                               <Marker
                                   key={index}
@@ -63,13 +71,13 @@ export default function MapScreen({ mapId }) {
                 />
             </View>
             <ScrollView style={styles.userProfileScroll}>
-                {testMapScreenArray.map((number, index) => {
+                {wpNumbers
+                  ? Object.entries(wpNumbers).map(([index, number]) => {
                     return (
                         <View
                             key={index}
-                            style={styles.mapScreenDetails}
-                        >
-                            <Text style={styles.mapScreenNumber}>{number}</Text>
+                            style={styles.mapScreenDetails}>
+                            <Text style={styles.mapScreenNumber}>{number ? 'Done' : ""}</Text>
                             <TextInput style={styles.mapScreenInput} />
                             <View style={styles.mapScreenBtn}>
                                 <Button
@@ -79,7 +87,7 @@ export default function MapScreen({ mapId }) {
                             </View>
                         </View>
                     );
-                })}
+                }): ""}
                 <Button
                     title="Submit All Codes!"
                     onPress={() => {

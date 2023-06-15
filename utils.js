@@ -30,3 +30,8 @@ export const deleteUser = (uid) => {
 export const fetchMap = (mapId) => {
     return URL.get(`/maps/${mapId}`).then(({ data }) => data.map);
 };
+
+export const getUser = (uid) => {
+  return new Promise((resolve, reject) => {resolve({current_maps: {100: {0: true, 1: false, 2: false}}})})
+  return URL.get(`/users/${uid}`).then(({data}) => data.user)
+}
