@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 30,
   },
+  locationButtons: {
+    padding: 10,
+  },
   mapContainer: {
     flex: 1,
     backgroundColor: "#fff",
@@ -104,6 +107,27 @@ const styles = StyleSheet.create({
   },
   launchCamera: {
     marginTop: 20,
+  },
+  cuText: {
+    padding: 10,
+  },
+  cuButton: {
+    padding: 10,
+  },
+  passwordInputField: {
+    padding: 8,
+    backgroundColor: "white",
+  },
+  notPasswordInputField: {},
+  passwordTextFeild: {
+    marginLeft: 10,
+  },
+  passwordError: {
+    color: "transparent",
+    backgroundColor: "transparent",
+  },
+  passwordIsError: {
+    color: "red",
   },
 });
 
