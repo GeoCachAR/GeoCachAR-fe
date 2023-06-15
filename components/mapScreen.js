@@ -7,13 +7,20 @@ import {
   Linking,
 } from "react-native";
 import styles from "../StyleSheet";
-import MapView from "react-native-maps";
-import { useState } from "react";
+import { MapView, Marker }from "react-native-maps";
+import { useEffect, useState } from "react";
+import { fetchMap } from "../utils";
+
 
 const testMapScreenArray = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-export default function MapScreen() {
+export default function MapScreen({mapId}) {
+mapId = "100"
   const [congratsMessage, setCongratsMessage] = useState("");
+  const [map, setMap] = useState({})
+
+  useEffect(() => {fetchMap(mapId).then((newMap)=>{setMap(newMap)})},[])
+
 
   return (
     <>
@@ -26,8 +33,12 @@ export default function MapScreen() {
           longitude: -122.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
-        }}
-      />
+        }}>
+          {map.waypoints.map((waypoint) => {
+            return <Marker title={waypoint.title} description={waypoint.description} coordinate={{latitude:waypoint.latitude, longitude:waypoint.longitude
+            }}></Marker>
+          })}
+      </MapView>
       <View style={styles.launchCamera}>
         <Button
           title="Launch Camera"

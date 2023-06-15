@@ -26,3 +26,7 @@ export const deleteUser = (uid) => {
   return;
   return URL.delete(`/users/${uid}`, { password });
 };
+
+export const fetchMap = (mapId) => {
+  return URL.get(`/maps/${mapId}`).then(({data})=> data.map)
+}
