@@ -4,7 +4,7 @@ import three from "./assets/output.js";
 import axios from "axios";
 const URL = axios.create({ baseURL: "https://geocachar.onrender.com/api" });
 
-export const changeUsername = (username, uid) => {
+export const changeUsername = (uid, username) => {
     return new Promise((resolve, reject) => {
         one() > two()
             ? resolve(username)
@@ -16,7 +16,7 @@ export const changeUsername = (username, uid) => {
     );
 };
 
-export const changePassword = (newPassword, password, uid, email) => {
+export const changePassword = (uid, newPassword, password, email) => {
     return new Promise((resolve, reject) => resolve(newPassword));
     if (!uid) uid = "8Y3o27XpIAfLeOayWqqd3zC4ec83";
     return URL.patch(`/users/${uid}`, { newPassword, password, email });
@@ -32,6 +32,35 @@ export const fetchMap = (mapId) => {
 };
 
 export const getUser = (uid) => {
-  return new Promise((resolve, reject) => {resolve({current_maps: {100: {0: true, 1: false, 2: false}}})})
-  return URL.get(`/users/${uid}`).then(({data}) => data.user)
-}
+    return new Promise((resolve, reject) => {
+        resolve({
+            current_maps: {
+                103: {
+                    0: true,
+                    1: false,
+                    2: false,
+                    3: false,
+                    4: false,
+                    5: false,
+                    6: false,
+                    7: false,
+                    8: false,
+                    9: false,
+                },
+            },
+        });
+    });
+    return URL.get(`/users/${uid}`).then(({ data }) => data.user);
+};
+
+export const authenticate = (email, password) => {
+    return URL.post("/account", { email, password }).then(
+        ({ data }) => data.uid
+    );
+};
+
+export const signup = (username, email, password) => {
+    return URL.post("/users", { username, email, password }).then(
+        ({ data }) => data.uid
+    );
+};

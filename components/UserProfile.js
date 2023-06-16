@@ -1,24 +1,24 @@
 import { Text, ScrollView, Button, View, Alert } from "react-native";
 import styles from "../StyleSheet";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { deleteUser } from "../utils";
+import { uidContext } from "./Contexts";
 
 export default function UserProfile({ username, password }) {
-    const [email, setEmail] = useState("arghhh@piratemail.com");
-    // Password probably won't be kept in state like this, but just for setup/design purposes
-    // These state may change or be moved and just set up here for set up
-    const [currentMap, setMap] = useState("Australia");
-    const [currentMapPercentage, setCurrentMapPercentage] = useState("20%");
-    const [completedMaps, setCompletedMaps] = useState([
-        "London ",
-        "Manchester",
-    ]);
+    const email = "arghhh@piratemail.com";
+    const currentMap = "Australia";
+    const currentMapPercentage = "20%";
+    const completedMaps = ["London ", "Manchester"];
+
     const navigation = useNavigation();
+    const { user } = useContext(uidContext);
 
     return (
         <ScrollView style={styles.userProfileScroll}>
-            <Text style={styles.userProfileEntry}>Username: {username}</Text>
+            <Text style={styles.userProfileEntry}>
+                {user.uid} Username: {username}
+            </Text>
             <View style={styles.userProfileBtnView}>
                 <Button
                     title="Update"
@@ -27,7 +27,9 @@ export default function UserProfile({ username, password }) {
                     }}
                 />
             </View>
-            <Text style={styles.userProfileEntry}>Email: {email}</Text>
+            <Text style={styles.userProfileEntry}>
+                Email: {user.email ? user.email : email}
+            </Text>
             <View style={styles.userProfileBtnView}>
                 <Button
                     title="Update"
