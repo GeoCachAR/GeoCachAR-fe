@@ -10,7 +10,7 @@ export default function SignUp({ navigation }) {
         <Text style={styles.formText}>Enter username:</Text>
         <TextInput style={styles.input} placeholder="Enter username" />
         <Text style={styles.formText}>Enter email:</Text>
-        <TextInput style={styles.input} placeholder="Enter email" />
+        <TextInput style={styles.input} keyboardType="email-address" placeholder="Enter email" />
         <Text style={styles.formText}>Enter password:</Text>
         <TextInput
           style={styles.input}

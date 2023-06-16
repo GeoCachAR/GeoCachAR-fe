@@ -24,6 +24,7 @@ export default function LogIn({ navigation }) {
                 <Text style={styles.formText}>Enter email:</Text>
                 <TextInput
                     style={styles.input}
+                    keyboardType="email-address"
                     onChangeText={(text) =>
                         setInputs((curr) => {
                             return { ...curr, email: text };

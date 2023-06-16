@@ -18,6 +18,8 @@ export default function MapScreen({ mapId }) {
     const [map, setMap] = useState(false);
     const [wpNumbers, setWpNumbers] = useState(false);
     const [numberInputs, setNumberInputs] = useState();
+    const [waypointNumbers, setWaypointNumber] = useState('')
+    const [enteredCode, setEnteredCode] = useState('')
 
     useEffect(() => {
         fetchMap(mapId)
@@ -35,13 +37,16 @@ export default function MapScreen({ mapId }) {
                         return { ...numInputs, [key]: "" };
                     }, {})
                 );
-            });
+            }).then(()=>{
+
+            })
     }, []);
 
     function handleAlert(wp) {
         return Alert.alert(`You pressed ${wp}`, map.waypoints[wp].description);
     }
 
+    
     return (
         <>
             <Text style={styles.availableLocations}>San Francisco</Text>
@@ -50,14 +55,15 @@ export default function MapScreen({ mapId }) {
                       <MapView
                           style={styles.map}
                           initialRegion={{
-                              latitude: map.location.Latitude,
-                              longitude: map.location.Longtitude,
-                              latitudeDelta: map.location.LatDelta,
-                              longitudeDelta: map.location.LonDelta,
+                              latitude: map.location.latitude,
+                              longitude: map.location.longitude,
+                              latitudeDelta: map.location.latDelta,
+                              longitudeDelta: map.location.lonDelta,
                           }}
                       >
                           {Object.entries(map.waypoints).map(
                               ([index, waypoint]) => {
+                                
                                   return (
                                       <Marker
                                           key={index}
@@ -67,8 +73,8 @@ export default function MapScreen({ mapId }) {
                                           title={index}
                                           description=""
                                           coordinate={{
-                                              latitude: waypoint.Latitude,
-                                              longitude: waypoint.Longtitude,
+                                              latitude: waypoint.latitude,
+                                              longitude: waypoint.longitude,
                                           }}
                                       ></Marker>
                                   );
@@ -76,19 +82,22 @@ export default function MapScreen({ mapId }) {
                           )}
                       </MapView>
                   ))()
-                : ""}
+                : <Text>map loading</Text>}
             <View style={styles.launchCamera}>
                 <Button
                     title="Launch Camera"
                     onPress={() => {
-                        Linking.openURL("https://test-geocachar.netlify.app");
+                        Linking.openURL(map.arUrl);
                     }}
                 />
             </View>
             <ScrollView style={styles.userProfileScroll}>
                 {wpNumbers
+                
                     ? Object.entries(wpNumbers).map(([index, number]) => {
+                       
                           return (
+                            
                               <View
                                   key={index}
                                   style={styles.mapScreenDetails}
@@ -96,19 +105,26 @@ export default function MapScreen({ mapId }) {
                                   <Text style={styles.mapScreenNumber}>
                                       {index}
                                   </Text>
-                                  <TextInput style={styles.mapScreenInput} />
+                                  <TextInput maxLength={3} placeholder="submit your code..." keyboardType='numeric' style={styles.mapScreenInput} onChangeText={(value) => setEnteredCode(value)} />
                                   <View style={styles.mapScreenBtn}>
                                       <Button
                                           title={number ? "Done" : "Unlock"}
                                           onPress={() => {
                                               setWpNumbers((curr) => {
+                                                console.log(enteredCode, map.waypoints[index])
+                                                if(enteredCode==map.waypoints[index].code){
                                                   return {
                                                       ...curr,
-                                                      [index]: !curr[index],
-                                                  };
-                                              });
+
+                                                      [index]: true,
+                                                  }
+                                                
+                                              } return curr
+                                            });
+                                              
                                           }}
                                       />
+                                     
                                   </View>
                               </View>
                           );
