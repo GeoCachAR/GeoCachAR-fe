@@ -1,7 +1,7 @@
 import { Text, TextInput, View, Button } from "react-native";
 import { useContext, useState } from "react";
 import styles from "../StyleSheet";
-import { authenticate } from "../utils";
+import { authenticate, getUser } from "../utils";
 import { uidContext } from "./Contexts";
 
 export default function LogIn({ navigation }) {
@@ -50,9 +50,12 @@ export default function LogIn({ navigation }) {
                 onPress={() => {
                     handleLogin()
                         .then((uid) => {
-                            setUser({ uid: uid });
-                            navigation.navigate("Navigation");
-                        })
+                            return getUser(uid)
+                            
+                        }).then((user)=>{
+                            setUser(user);
+                            navigation.navigate("Navigation")
+                            })
                         .catch((err) => {
                             console.log(err);
                             setInputs((curr) => {

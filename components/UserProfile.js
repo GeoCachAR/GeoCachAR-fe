@@ -6,18 +6,24 @@ import { deleteUser } from "../utils";
 import { uidContext } from "./Contexts";
 
 export default function UserProfile({ username, password }) {
-    const email = "arghhh@piratemail.com";
-    const currentMap = "Australia";
-    const currentMapPercentage = "20%";
-    const completedMaps = ["London ", "Manchester"];
+    const email = "Email not found - are you logged in";
+    const currentMap = "not found";
+    const currentMapPercentage = "not connected";
+    const completedMaps = 'not connected';
 
     const navigation = useNavigation();
-    const { user } = useContext(uidContext);
+    const { user, setUser } = useContext(uidContext);
 
+    const handleLogoutPress =() =>{
+        setUser({})
+        navigation.navigate("GeoCachAR")
+        
+    }
+  
     return (
         <ScrollView style={styles.userProfileScroll}>
             <Text style={styles.userProfileEntry}>
-                {user.uid} Username: {username}
+                {user.uid} Username: {user.name}
             </Text>
             <View style={styles.userProfileBtnView}>
                 <Button
@@ -75,7 +81,7 @@ export default function UserProfile({ username, password }) {
             <View style={styles.userProfileBtnView}>
                 <Button
                     title="Logout"
-                    onPress={() => navigation.navigate("GeoCachAR")}
+                    onPress={() => handleLogoutPress()}
                 />
             </View>
         </ScrollView>
