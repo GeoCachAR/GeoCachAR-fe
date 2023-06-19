@@ -10,20 +10,20 @@ export default function MapList() {
     const [locations, setLocations] = useState([]);
 
     useEffect(() => {
-        fetchMapList()
-            .then((data) => setMapList(data.maps))
-            .then(() => {
-                const locationsArr = [];
-                for (const property in mapList) {
-                    locationsArr.push({
-                        location: mapList[property].mapLocation,
-                        name: mapList[property].mapName,
-                        key: property,
-                    });
-                }
-                setLocations(locationsArr);
-            });
+        fetchMapList().then((data) => setMapList(data.maps));
     }, []);
+
+    useEffect(() => {
+        const locationsArr = [];
+        for (const property in mapList) {
+            locationsArr.push({
+                location: mapList[property].mapLocation,
+                name: mapList[property].mapName,
+                key: property,
+            });
+        }
+        setLocations(locationsArr);
+    }, [Object.keys(mapList).length]);
 
     return (
         <ScrollView>
