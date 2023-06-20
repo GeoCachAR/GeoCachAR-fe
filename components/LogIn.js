@@ -42,8 +42,8 @@ export default function LogIn({ navigation }) {
                     placeholder="Enter password"
                 />
             </View>
-            <Text onPress={() => navigation.navigate("Reset Password")}>
-                Forgotton password
+            <Text style={styles.passwordReset} onPress={() => navigation.navigate("Reset Password")}>
+                Forgotten your password?{'\n'}click here to reset
             </Text>
             <Button
                 title="Log In"

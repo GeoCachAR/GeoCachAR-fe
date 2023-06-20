@@ -11,6 +11,7 @@ import MyTabs from "./components/Navigation";
 import { UidProvider } from "./components/Contexts";
 import ChangeEmail from "./components/ChangeEmail";
 import ResetPassword from "./components/ResetPassword";
+import DeleteUser from "./components/DeleteUser";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,10 @@ export default function App() {
                     <Stack.Screen
                         name="Reset Password"
                         component={ResetPassword}
+                    />
+                    <Stack.Screen
+                    name="Delete User"
+                    component={DeleteUser}
                     />
                 </Stack.Navigator>
             </NavigationContainer>
