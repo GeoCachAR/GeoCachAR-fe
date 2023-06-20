@@ -6,21 +6,21 @@ import {
   View,
   Linking,
   Alert,
-} from 'react-native';
-import styles from '../StyleSheet';
-import MapView, { Marker } from 'react-native-maps';
-import { useEffect, useState } from 'react';
-import { fetchMap, getUser } from '../utils';
+} from "react-native";
+import styles from "../StyleSheet";
+import MapView, { Marker } from "react-native-maps";
+import { useEffect, useState } from "react";
+import { fetchMap, getUser } from "../utils";
 
 export default function MapScreen({ route }) {
-    const { mapId } = route.params
+  const { mapId } = route.params;
   // mapId = "103";
-  const [congratsMessage, setCongratsMessage] = useState('');
+  const [congratsMessage, setCongratsMessage] = useState("");
   const [map, setMap] = useState(false);
   const [wpNumbers, setWpNumbers] = useState(false);
   const [numberInputs, setNumberInputs] = useState();
-  const [waypointNumbers, setWaypointNumber] = useState('');
-  const [enteredCode, setEnteredCode] = useState('');
+  const [waypointNumbers, setWaypointNumber] = useState("");
+  const [enteredCode, setEnteredCode] = useState("");
 
   useEffect(() => {
     fetchMap(mapId)
@@ -35,7 +35,7 @@ export default function MapScreen({ route }) {
       .then((wpWaypoints) => {
         setNumberInputs(
           Object.keys(wpWaypoints).reduce((numInputs, key) => {
-            return { ...numInputs, [key]: '' };
+            return { ...numInputs, [key]: "" };
           }, {})
         );
       })
@@ -52,6 +52,8 @@ export default function MapScreen({ route }) {
       {map ? (
         (() => (
           <MapView
+            accessibilityLabel={`Map view of ${map.mapName}`}
+            accessible={true}
             style={styles.map}
             initialRegion={{
               latitude: map.location.latitude,
@@ -63,6 +65,7 @@ export default function MapScreen({ route }) {
             {Object.entries(map.waypoints).map(([index, waypoint]) => {
               return (
                 <Marker
+                  accessibilityLabel="Waypoint on the map"
                   key={index}
                   onPress={() => {
                     handleAlert(index);
@@ -81,30 +84,37 @@ export default function MapScreen({ route }) {
       ) : (
         <Text>map loading</Text>
       )}
-      <View style={styles.launchCamera}>
+      <View style={styles.launchCamera} accessible={true}>
         <Button
+          accessibilityLabel="Press to Launch Camera"
           title="Launch Camera"
           onPress={() => {
             Linking.openURL(map.arUrl);
           }}
         />
       </View>
-      <ScrollView style={styles.userProfileScroll}>
+      <ScrollView style={styles.userProfileScroll} accessible={true}>
         {wpNumbers
           ? Object.entries(wpNumbers).map(([index, number]) => {
               return (
-                <View key={index} style={styles.mapScreenDetails}>
+                <View
+                  key={index}
+                  style={styles.mapScreenDetails}
+                  accessible={true}
+                >
                   <Text style={styles.mapScreenNumber}>{index}</Text>
                   <TextInput
+                    accessibilityLabel="Enter your numeric code"
                     maxLength={3}
                     placeholder="submit your code..."
                     keyboardType="numeric"
                     style={styles.mapScreenInput}
                     onChangeText={(value) => setEnteredCode(value)}
                   />
-                  <View style={styles.mapScreenBtn}>
+                  <View style={styles.mapScreenBtn} accessible={true}>
                     <Button
-                      title={number ? 'Done' : 'Unlock'}
+                      accessibilityLabel="Press to save your numeric code"
+                      title={number ? "Done" : "Unlock"}
                       onPress={() => {
                         setWpNumbers((curr) => {
                           console.log(enteredCode, map.waypoints[index]);
@@ -123,15 +133,16 @@ export default function MapScreen({ route }) {
                 </View>
               );
             })
-          : ''}
+          : ""}
         <Button
+          accessibilityLabel="Press to submit all codes"
           title="Submit All Codes!"
           onPress={() => {
             return Object.values(wpNumbers).every((x) => x)
               ? setCongratsMessage(
-                  'Congratulations! You cracked the code and completed the map!'
+                  "Congratulations! You cracked the code and completed the map!"
                 )
-              : setCongratsMessage('');
+              : setCongratsMessage("");
           }}
         />
         <Text style={styles.testtest}>{congratsMessage}</Text>

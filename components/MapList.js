@@ -1,8 +1,8 @@
-import { Text, Button, ScrollView, View } from 'react-native';
-import styles from '../StyleSheet';
-import { useNavigation } from '@react-navigation/native';
-import { fetchMapList } from '../utils';
-import { useEffect, useState } from 'react';
+import { Text, Button, ScrollView, View } from "react-native";
+import styles from "../StyleSheet";
+import { useNavigation } from "@react-navigation/native";
+import { fetchMapList } from "../utils";
+import { useEffect, useState } from "react";
 
 export default function MapList() {
   const navigation = useNavigation();
@@ -27,16 +27,21 @@ export default function MapList() {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView accessible={true}>
       <Text style={styles.availableLocations}>Available Locations</Text>
 
       {locations.map((location) => {
         return (
-          <View key={location.key} style={styles.locationButtons}>
+          <View
+            key={location.key}
+            style={styles.locationButtons}
+            accessible={true}
+          >
             <Button
-              title={location.location + ' ' + '-' + ' ' + location.name}
+              accessibilityLabel={`View a map of ${location.name}`}
+              title={location.location + " " + "-" + " " + location.name}
               onPress={() => {
-                navigation.navigate('Map Screen', { mapId: location.key });
+                navigation.navigate("Map Screen", { mapId: location.key });
               }}
             />
           </View>
