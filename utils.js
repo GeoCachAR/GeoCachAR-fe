@@ -4,16 +4,13 @@ import three from './assets/output.js';
 import axios from 'axios';
 const URL = axios.create({ baseURL: 'https://geocachar.onrender.com/api' });
 
-export const changeUsername = (uid, username) => {
-  return new Promise((resolve, reject) => {
-    one() > two()
-      ? resolve(username)
-      : setTimeout(() => reject(username), three());
-  });
-  if (!uid) uid = '8Y3o27XpIAfLeOayWqqd3zC4ec83';
-  return URL.patch(`/users/${uid}`, { username }).then(
-    ({ data }) => data.user.username
-  );
+export const changeUsername = (uid, name) => {
+  return URL.patch(`/users/${uid}`, { name }).then(({ data }) => data.name);
+};
+
+export const changeEmail = (newEmail, oldEmail, uid, password) => {
+  console.log(newEmail, oldEmail, password, uid);
+  return URL.patch(`/users/${uid}`, { newEmail, oldEmail, password });
 };
 
 export const changePassword = (uid, newPassword, password, email) => {
@@ -24,7 +21,7 @@ export const changePassword = (uid, newPassword, password, email) => {
 
 export const deleteUser = (uid) => {
   return;
-  return URL.delete(`/users/${uid}`, { password });
+  return URL.delete(`/users/${uid}`, { email, password });
 };
 
 export const fetchMap = (mapId) => {
@@ -32,15 +29,18 @@ export const fetchMap = (mapId) => {
 };
 
 export const fetchMapList = () => {
-  return URL.get('/maps').then(({data}) => data);
+  return URL.get('/maps').then(({ data }) => data);
 };
 
 export const getUser = (uid) => {
   return new Promise((resolve, reject) => {
     resolve({
+      name: 'Default not connected',
+      uid: uid,
+      email: 'thedevelopingdevs@gmail.com',
       current_maps: {
-        103: {
-          0: true,
+        104: {
+          0: false,
           1: false,
           2: false,
           3: false,
@@ -62,7 +62,7 @@ export const authenticate = (email, password) => {
 };
 
 export const signup = (username, email, password) => {
-  return URL.post('/users', { username, email, password }).then(
+  return URL.post('/users', { name: username, email, password }).then(
     ({ data }) => data.uid
   );
 };

@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { fetchMap, getUser } from '../utils';
 
 export default function MapScreen({ route }) {
-    const { mapId } = route.params
+  const { mapId } = route.params;
   // mapId = "103";
   const [congratsMessage, setCongratsMessage] = useState('');
   const [map, setMap] = useState(false);
@@ -124,16 +124,18 @@ export default function MapScreen({ route }) {
               );
             })
           : ''}
-        <Button
-          title="Submit All Codes!"
-          onPress={() => {
-            return Object.values(wpNumbers).every((x) => x)
-              ? setCongratsMessage(
-                  'Congratulations! You cracked the code and completed the map!'
-                )
-              : setCongratsMessage('');
-          }}
-        />
+        <View style={styles.submitAllCodesView}>
+          <Button
+            title="Submit All Codes!"
+            onPress={() => {
+              return Object.values(wpNumbers).every((x) => x)
+                ? setCongratsMessage(
+                    'Congratulations! You cracked the code and completed the map!'
+                  )
+                : setCongratsMessage('');
+            }}
+          />
+        </View>
         <Text style={styles.testtest}>{congratsMessage}</Text>
       </ScrollView>
     </>

@@ -8,40 +8,43 @@ export default function MapList() {
   const navigation = useNavigation();
   const [mapList, setMapList] = useState({});
   const [locations, setLocations] = useState([]);
-  console.log(locations);
 
   useEffect(() => {
-    fetchMapList()
-      .then((data) => setMapList(data.maps))
-      .then(() => {
-        const locationsArr = [];
-        for (const property in mapList) {
-          locationsArr.push({
-            location: mapList[property].mapLocation,
-            name: mapList[property].mapName,
-            key: property,
-          });
-        }
-        setLocations(locationsArr);
-      });
+    fetchMapList().then((data) => setMapList(data.maps));
   }, []);
+
+  useEffect(() => {
+    const locationsArr = [];
+    for (const property in mapList) {
+      locationsArr.push({
+        location: mapList[property].mapLocation,
+        name: mapList[property].mapName,
+        key: property,
+      });
+    }
+    setLocations(locationsArr);
+  }, [Object.keys(mapList).length]);
 
   return (
     <ScrollView>
       <Text style={styles.availableLocations}>Available Locations</Text>
 
-      {locations.map((location) => {
-        return (
-          <View key={location.key} style={styles.locationButtons}>
-            <Button
-              title={location.location + ' ' + '-' + ' ' + location.name}
-              onPress={() => {
-                navigation.navigate('Map Screen', { mapId: location.key });
-              }}
-            />
-          </View>
-        );
-      })}
+      {locations.length !== 0
+        ? locations.map((location) => {
+            return (
+              <View key={location.key} style={styles.locationButtons}>
+                <Button
+                  title={location.location + ' ' + '-' + ' ' + location.name}
+                  onPress={() => {
+                    navigation.navigate('Map Screen', {
+                      mapId: location.key,
+                    });
+                  }}
+                />
+              </View>
+            );
+          })
+        : ''}
     </ScrollView>
   );
 }
