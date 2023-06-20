@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import styles from '../StyleSheet';
 import MapView, { Marker } from 'react-native-maps';
-import { useEffect, useState } from 'react';
-import { fetchMap, getUser } from '../utils';
+import { useContext, useEffect, useState } from 'react';
+import { fetchMap, getUser, patchCode } from '../utils';
+import { uidContext } from './Contexts.js';
+
 
 export default function MapScreen({ route }) {
   const { mapId } = route.params;
@@ -21,6 +23,7 @@ export default function MapScreen({ route }) {
   const [numberInputs, setNumberInputs] = useState();
   const [waypointNumbers, setWaypointNumber] = useState('');
   const [enteredCode, setEnteredCode] = useState('');
+  const { user, setUser } = useContext(uidContext);
 
   useEffect(() => {
     fetchMap(mapId)
@@ -41,6 +44,8 @@ export default function MapScreen({ route }) {
       })
       .then(() => {});
   }, []);
+
+
 
   function handleAlert(wp) {
     return Alert.alert(`You pressed ${wp}`, map.waypoints[wp].description);
@@ -107,16 +112,15 @@ export default function MapScreen({ route }) {
                       title={number ? 'Done' : 'Unlock'}
                       onPress={() => {
                         setWpNumbers((curr) => {
-                          console.log(enteredCode, map.waypoints[index]);
                           if (enteredCode == map.waypoints[index].code) {
                             return {
                               ...curr,
-
                               [index]: true,
                             };
                           }
                           return curr;
                         });
+                        patchCode(wpNumbers, mapId, user.uid)
                       }}
                     />
                   </View>
