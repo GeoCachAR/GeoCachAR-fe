@@ -15,7 +15,11 @@ export const changePassword = (uid = '007', email) => {
 };
 
 export const deleteUser = (uid, email, password) => {
-  return URL.delete(`/users/${uid}`, { email, password });
+  return axios({
+    method: 'delete',
+    url: `https://geocachar.onrender.com/api/users/${uid}`,
+    data: { email, password },
+  });
 };
 
 export const fetchMap = (mapId) => {

@@ -15,7 +15,8 @@ export default function DeleteUser({ navigation }) {
         setUser({});
         navigation.navigate('GeoCachAR');
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         return Alert.alert(
           'Error deleting account',
           'Please check your password is correct',
