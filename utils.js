@@ -10,8 +10,7 @@ export const changeEmail = (newEmail, oldEmail, uid, password) => {
     return URL.patch(`/users/${uid}`, { newEmail, oldEmail, password });
 };
 
-export const changePassword = (uid, email) => {
-    // return new Promise((resolve, reject) => resolve(email));
+export const changePassword = (uid = "007", email) => {
     return URL.patch(`/users/${uid}`, { email });
 };
 
