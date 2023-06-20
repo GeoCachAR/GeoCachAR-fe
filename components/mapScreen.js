@@ -10,7 +10,7 @@ import {
 import styles from "../StyleSheet";
 import MapView, { Marker } from "react-native-maps";
 import { useContext, useEffect, useState } from "react";
-import { fetchMap, getUser, patchCode } from "../utils";
+import { fetchMap, patchCode } from "../utils";
 import { uidContext } from "./Contexts.js";
 
 export default function MapScreen({ route }) {
@@ -19,29 +19,14 @@ export default function MapScreen({ route }) {
     const [congratsMessage, setCongratsMessage] = useState("");
     const [map, setMap] = useState(false);
     const [wpNumbers, setWpNumbers] = useState(false);
-    const [numberInputs, setNumberInputs] = useState();
-    const [waypointNumbers, setWaypointNumber] = useState("");
     const [enteredCode, setEnteredCode] = useState("");
-    const { user, setUser } = useContext(uidContext);
+    const { user } = useContext(uidContext);
 
     useEffect(() => {
-        fetchMap(mapId)
-            .then((newMap) => {
-                setMap(newMap);
-                return getUser();
-            })
-            .then((user) => {
-                setWpNumbers(user.current_maps[mapId]);
-                return user.current_maps[mapId];
-            })
-            .then((wpWaypoints) => {
-                setNumberInputs(
-                    Object.keys(wpWaypoints).reduce((numInputs, key) => {
-                        return { ...numInputs, [key]: "" };
-                    }, {})
-                );
-            })
-            .then(() => {});
+        fetchMap(mapId).then((newMap) => {
+            setMap(newMap);
+            setWpNumbers(user.current_maps[mapId]);
+        });
     }, []);
 
     function handleAlert(wp) {
