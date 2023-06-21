@@ -12,16 +12,26 @@ export default function SignUp({ navigation }) {
   const {setUser} = useContext(uidContext)
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessible={true}>
       <Text style={styles.logo}>GeoCachAR</Text>
       <Text style={styles.tagline}>Enter Sign Up Details</Text>
-      <View>
+      <View accessible={true}>
         <Text style={styles.formText}>Enter username:</Text>
-        <TextInput onChangeText={(text)=>{setUsername(text)}} style={styles.input} placeholder="Enter username" />
-        <Text style={styles.formText}>Enter email:</Text>
-        <TextInput onChangeText={(text)=>{setEmail(text)}} style={styles.input} keyboardType="email-address" placeholder="Enter email" />
         <Text style={styles.formText}>Enter password:</Text>
         <TextInput
+          accessibilityLabel="sign up password"
+        <TextInput accessibilityLabel="sign up username" onChangeText={(text)=>{setUsername(text)}} style={styles.input} placeholder="Enter username" />
+        <Text style={styles.formText}>Enter email:</Text>
+        <TextInput 
+          accessibilityLabel="sign up email address"
+          onChangeText={(text)=>{setEmail(text)}}
+          style={styles.input}
+          keyboardType="email-address"
+          placeholder="Enter email"
+        />
+        <Text style={styles.formText}>Enter password:</Text>
+        <TextInput
+          accessibilityLabel="sign up password"
           onChangeText={(text)=>{setPassword(text)}}
           style={styles.input}
           secureTextEntry={true}

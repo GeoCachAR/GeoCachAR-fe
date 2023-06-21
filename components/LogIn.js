@@ -5,22 +5,22 @@ import { authenticate, getUser } from "../utils";
 import { uidContext } from "./Contexts";
 
 export default function LogIn({ navigation }) {
-    const [inputs, setInputs] = useState({ email: "", password: "" });
-    const { setUser } = useContext(uidContext);
+  const [inputs, setInputs] = useState({ email: "", password: "" });
+  const { setUser } = useContext(uidContext);
 
-    function handleLogin() {
-        return authenticate(inputs.email, inputs.password).then((uid) => {
-            return uid;
-        });
-    }
-
-    return (
-        <View style={styles.container}>
+  function handleLogin() {
+    return authenticate(inputs.email, inputs.password).then((uid) => {
+      return uid;
+    });
+  }
+   return (
+        <View style={styles.container} accessible={true}>
             <Text style={styles.logo}>GeoCachAR</Text>
             <Text style={styles.tagline}>Enter Log In Details</Text>
-            <View>
+            <View accessible={true}>
                 <Text style={styles.formText}>Enter email:</Text>
                 <TextInput
+                    accessibilityLabel="login email address"
                     style={styles.input}
                     keyboardType="email-address"
                     onChangeText={(text) =>
@@ -32,6 +32,7 @@ export default function LogIn({ navigation }) {
                 />
                 <Text style={styles.formText}>Enter password:</Text>
                 <TextInput
+                    accessibilityLabel="login password"
                     style={styles.input}
                     secureTextEntry={true}
                     onChangeText={(text) =>
@@ -42,11 +43,16 @@ export default function LogIn({ navigation }) {
                     placeholder="Enter password"
                 />
             </View>
-            <Text style={styles.passwordReset} onPress={() => navigation.navigate("Reset Password")}>
+            <Text
+                accessibilityLabel="reset password"
+                style={styles.passwordReset} 
+                onPress={() => navigation.navigate("Reset Password")}
+            >
                 Forgotten your password?{'\n'}click here to reset
             </Text>
             <Button
                 title="Log In"
+                accessibilityRole="button"
                 accessibilityLabel="Log in"
                 onPress={() => {
                     handleLogin()

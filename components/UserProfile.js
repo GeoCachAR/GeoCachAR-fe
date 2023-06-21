@@ -25,21 +25,16 @@ export default function UserProfile() {
       .catch(() => Alert.alert('Reset email failed to send\nPlease try again'));
   };
 
-  /*
-    export const changePassword = (uid, email) => {
-    // return new Promise((resolve, reject) => resolve(email));
-    return URL.patch(`/users/${uid}`, { email });
-};
-    */
-
   return (
-    <ScrollView style={styles.userProfileScroll}>
+    <ScrollView style={styles.userProfileScroll} accessible={true}>
       <Text style={styles.userProfileEntry}>
         {/* {user.uid}  */}
         {'\n'}Username: {user.name}
       </Text>
-      <View style={styles.userProfileBtnView}>
+      <View style={styles.userProfileBtnView} accessible={true}>
         <Button
+          accessibiltyRole="button"
+          accessibilityLabel="Click to change username"
           title="Update"
           onPress={() => {
             navigation.navigate('Change Username');
@@ -49,15 +44,20 @@ export default function UserProfile() {
       <Text style={styles.userProfileEntry}>
         Email: {user.email ? user.email : email}
       </Text>
-      <View style={styles.userProfileBtnView}>
+      <View style={styles.userProfileBtnView} accessible={true}>
         <Button
+          accessibiltyRole="button"
+          accessibilityLabel="Click to change email"
           title="Update"
           onPress={() => navigation.navigate('Change Email')}
         />
       </View>
       <Text style={styles.userProfileEntry}>Password: {'********'}</Text>
-      <View style={styles.userProfileBtnView}>
+      <View style={styles.userProfileBtnView} accessible={true}>
         <Button
+          accessibiltyRole="button"
+          accessibilityLabel="Click to change password"
+          accessibiltyHint="Click to receive an email to change your password"
           style={styles.homeBtnView}
           title="Update"
           onPress={() => {
@@ -79,8 +79,11 @@ export default function UserProfile() {
           }}
         />
       </View>
-      <View style={styles.userProfileDeleteBtnView}>
+      <View style={styles.userProfileDeleteBtnView} accessible={true}>
         <Button
+          accessibilityLabel="Delete account"
+          accessibiltyRole="button"
+          accessibiltyHint="Will delete your account if you proceed."
           title="Delete Account"
           onPress={() => {
             return Alert.alert(
@@ -102,13 +105,19 @@ export default function UserProfile() {
       <Text style={styles.userProfileEntry}>
         {currentMap} {currentMapPercentage}
       </Text>
-      <View style={styles.userProfileBtnView}>
+      <View accessible={true} style={styles.userProfileBtnView}>
         <Button title="Continue" />
       </View>
       <Text style={styles.userProfileHeader}>Completed Maps:</Text>
       <Text style={styles.userProfileEntry}>{completedMaps}</Text>
-      <View style={styles.userProfileBtnView}>
-        <Button title="Logout" onPress={() => handleLogoutPress()} />
+      <View accessible={true} style={styles.userProfileBtnView}>
+        <Button
+          accessibilityLabel="Logout"
+          accessibiltyRole="button"
+          accessibiltyHint="Will log you out of the app"
+          title="Logout"
+          onPress={() => handleLogoutPress()}
+        />
       </View>
     </ScrollView>
   );
