@@ -9,147 +9,190 @@ import {
 } from "react-native";
 import styles from "../StyleSheet";
 import MapView, { Marker } from "react-native-maps";
-import { useEffect, useState } from "react";
-import { fetchMap, getUser } from "../utils";
+import { useContext, useEffect, useState } from "react";
+import { completeMap, fetchMap, patchCode } from "../utils";
+import { uidContext } from "./Contexts.js";
 
-export default function MapScreen({ route }) {
+export default function MapScreen({ route, navigation }) {
   const { mapId } = route.params;
-  // mapId = "103";
-  const [congratsMessage, setCongratsMessage] = useState("");
   const [map, setMap] = useState(false);
   const [wpNumbers, setWpNumbers] = useState(false);
-  const [numberInputs, setNumberInputs] = useState();
-  const [waypointNumbers, setWaypointNumber] = useState("");
   const [enteredCode, setEnteredCode] = useState("");
+  const { user } = useContext(uidContext);
+    useEffect(() => {
+        fetchMap(mapId).then((newMap) => {
+            setMap(newMap);
+            setWpNumbers(user.current_maps[mapId]);
+        });
+    }, []);
 
-  useEffect(() => {
-    fetchMap(mapId)
-      .then((newMap) => {
-        setMap(newMap);
-        return getUser();
+  const handlePress = () => {
+    if (Object.values(wpNumbers).every(x => x)) {
+      completeMap(user.uid, mapId).then(() => {
+        Alert.alert(
+          'Congratulations!!! You\'ve cracked the codes and completed map!',
+          'What would you like to do now?',
+          [
+            {
+              text: 'Return to Home',
+              onPress: () => navigation.navigate('Home'),
+            },
+            {
+              text: 'View other maps',
+              onPress: () => navigation.navigate('Maps'),
+            }
+          ],
+          {cancelable: true}
+        )
       })
-      .then((user) => {
-        setWpNumbers(user.current_maps[mapId]);
-        return user.current_maps[mapId];
+      .catch(() => {
+        return Alert.alert("Error, unable to complete", "Please try again")
       })
-      .then((wpWaypoints) => {
-        setNumberInputs(
-          Object.keys(wpWaypoints).reduce((numInputs, key) => {
-            return { ...numInputs, [key]: "" };
-          }, {})
-        );
-      })
-      .then(() => {});
-  }, []);
-
-  function handleAlert(wp) {
-    return Alert.alert(`You pressed ${wp}`, map.waypoints[wp].description);
+    } else {
+      Alert.alert(
+        'You\'ve not yet unlocked all the codes...',
+        '',
+        [
+          {
+            text: 'Resume',
+            style: 'cancel'
+          }
+        ],
+        {cancelable: true}
+      )
+    }
   }
+  const handleAlert = (wp) => {
+    return Alert.alert(`Clue ${Number(wp)+1}`, map.waypoints[wp].description);
+  }
+  
+    return (
+        <>
+            <Text style={styles.availableLocations}>{map.mapName}</Text>
+            {map ? (
+                (() => (
+                    <MapView
+                      accessibilityLabel={`Map view of ${map.mapName}`}
+                      accessible={true}
+                      style={styles.map}
+                      initialRegion={{
+                        latitude: map.location.latitude,
+                        longitude: map.location.longitude,
+                        latitudeDelta: map.location.latDelta,
+                        longitudeDelta: map.location.lonDelta,
+                      }}
+                    >
+                    {Object.entries(map.waypoints).map(
+                      ([index, waypoint]) => {
+                        return (
+                          <Marker
+                            accessibilityLabel="Waypoint on the map"
+                            accessibilityHint="Will give the hint of the waypoint selected"
+                            key={index}
+                            onPress={() => {
+                              handleAlert(index);
+                            }}
+                            title={String(Number(index)+1)}
+                            description=""
+                            coordinate={{
+                              latitude: waypoint.latitude,
+                              longitude: waypoint.longitude,
+                            }}
+                          ></Marker>
+                        );
+                      }
+                    )}
+                  </MapView>
+                ))()
+              ) : (
+                <Text>map loading</Text>
+            )}
+            <View style={styles.launchCamera} accessible={true}>
+              <Button
+                accessibilityLabel="Launch Camera"
+                accessibilityHint="Will launch your default browser and ask for the camera to be enabaled"
+                title="Launch Camera"
+                onPress={() => {
+                  Linking.openURL(map.arUrl);
+                }}
+              />
+            </View>
+            <ScrollView style={styles.userProfileScroll} accessible={true}>
+                {wpNumbers
+                    ? Object.entries(wpNumbers).map(([index, number]) => {
+                          return (
+                              <View
+                                  key={index}
+                                  style={styles.mapScreenDetails}
+                                  accessible={true}
+                              >
+                                  <Text style={styles.mapScreenNumber}>
+                                      {Number(index)+1}
+                                  </Text>
+                                  <TextInput
+                                    accessibilityLabel="Enter your numeric code"
+                                    maxLength={3}
+                                    placeholder="submit your code..."
+                                    keyboardType="numeric"
+                                    style={styles.mapScreenInput}
+                                    onChangeText={(value) =>
+                                      setEnteredCode(value)
+                                    }
+                                  />
+                                  <View style={styles.mapScreenBtn} accessible={true}>
+                                      <Button
+                                        accessibilityLabel="Press to save your numeric code"
+                                          title={number ? "Done" : "Unlock"}
+                                          onPress={() => {
+                                              setWpNumbers((curr) => {
+                                                  if (
+                                                      enteredCode ==
+                                                      map.waypoints[index].code
+                                                  ) {
+                                                      patchCode(
+                                                          {
+                                                              ...curr,
+                                                              [index]: true,
+                                                          },
 
-  return (
-    <>
-      <Text style={styles.availableLocations}>{map.mapName}</Text>
-      {map ? (
-        (() => (
-          <MapView
-            accessibilityLabel={`Map view of ${map.mapName}`}
-            accessible={true}
-            style={styles.map}
-            initialRegion={{
-              latitude: map.location.latitude,
-              longitude: map.location.longitude,
-              latitudeDelta: map.location.latDelta,
-              longitudeDelta: map.location.lonDelta,
-            }}
-          >
-            {Object.entries(map.waypoints).map(([index, waypoint]) => {
-              return (
-                <Marker
-                  accessibilityLabel="Waypoint on the map"
-                  accessibilityHint="Will give the hint of the waypoint selected"
-                  key={index}
-                  onPress={() => {
-                    handleAlert(index);
-                  }}
-                  title={index}
-                  description=""
-                  coordinate={{
-                    latitude: waypoint.latitude,
-                    longitude: waypoint.longitude,
-                  }}
-                ></Marker>
-              );
-            })}
-          </MapView>
-        ))()
-      ) : (
-        <Text>map loading</Text>
-      )}
-      <View style={styles.launchCamera} accessible={true}>
-        <Button
-          accessibilityLabel="Launch Camera"
-          accessibilityHint="Will launch your default browser and ask for the camera to be enabaled"
-          title="Launch Camera"
-          onPress={() => {
-            Linking.openURL(map.arUrl);
-          }}
-        />
-      </View>
-      <ScrollView style={styles.userProfileScroll} accessible={true}>
-        {wpNumbers
-          ? Object.entries(wpNumbers).map(([index, number]) => {
-              return (
-                <View
-                  key={index}
-                  style={styles.mapScreenDetails}
-                  accessible={true}
-                >
-                  <Text style={styles.mapScreenNumber}>{index}</Text>
-                  <TextInput
-                    accessibilityLabel="Enter your numeric code"
-                    maxLength={3}
-                    placeholder="submit your code..."
-                    keyboardType="numeric"
-                    style={styles.mapScreenInput}
-                    onChangeText={(value) => setEnteredCode(value)}
-                  />
-                  <View style={styles.mapScreenBtn} accessible={true}>
+                                                          mapId,
+                                                          user.uid
+                                                      ).then(()=>{
+                                                Alert.alert('Correct code entered!', '', [ {
+                                                    text: 'ok',
+                                                    style: 'cancel',
+                                                  }], {cancelable: true})
+                                              });
+                                                      return {
+                                                          ...curr,
+                                                          [index]: true,
+                                                      };
+                                                  }
+                                                  Alert.alert('Sorry, wrong code, try again.', '', [ {
+                                                    text: 'ok',
+                                                    style: 'cancel',
+                                                  }], {cancelable: true})
+                                                  return curr;
+                                                  
+                                              })
+                                          }}
+                                      />
+                                  </View>
+                              </View>
+                          );
+                      })
+                    : ""}
+                <View style={styles.submitAllCodesView} accessible={true}>
                     <Button
-                      accessibilityLabel="Press to save your numeric code"
-                      title={number ? "Done" : "Unlock"}
+                      accessibilityLabel="Press to submit all codes"
+                      accessibilityHint="Will submit all codes and let you know if they were correct"
+                      title="Submit All Codes!"
                       onPress={() => {
-                        setWpNumbers((curr) => {
-                          console.log(enteredCode, map.waypoints[index]);
-                          if (enteredCode == map.waypoints[index].code) {
-                            return {
-                              ...curr,
-
-                              [index]: true,
-                            };
-                          }
-                          return curr;
-                        });
+                        handlePress()
                       }}
                     />
-                  </View>
                 </View>
-              );
-            })
-          : ""}
-        <Button
-          accessibilityLabel="Press to submit all codes"
-          accessibilityHint="Will submit all codes and let you know if they were correct"
-          title="Submit All Codes!"
-          onPress={() => {
-            return Object.values(wpNumbers).every((x) => x)
-              ? setCongratsMessage(
-                  "Congratulations! You cracked the code and completed the map!"
-                )
-              : setCongratsMessage("");
-          }}
-        />
-        <Text style={styles.testtest}>{congratsMessage}</Text>
-      </ScrollView>
-    </>
-  );
+            </ScrollView>
+        </>
+    );
 }

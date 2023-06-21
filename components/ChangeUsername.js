@@ -1,30 +1,47 @@
-import { Text, View, Button, TextInput } from "react-native";
-import styles from "../StyleSheet.js";
-import { useState } from "react";
-import { changeUsername } from "../utils.js";
+import { Text, View, Button, TextInput } from 'react-native';
+import styles from '../StyleSheet.js';
+import { useState, useContext } from 'react';
+import { changeUsername } from '../utils.js';
+import { uidContext } from './Contexts.js';
 
-export default function ChangeUsername({ username, setUsername }) {
-  const [newUsername, setNewUsername] = useState("");
+export default function ChangeUsername() {
+  const [newUsername, setNewUsername] = useState('');
+  const { user, setUser } = useContext(uidContext);
+
 
   function handleChange(text) {
     setNewUsername(text);
   }
   function handlePress() {
-    const currUsername = username;
-    setUsername(newUsername);
-    changeUsername(newUsername).catch(() => setUsername(currUsername));
+    const currUsername = user.name;
+    setUser((curr) => {
+      return { ...curr, name: newUsername };
+    });
+    changeUsername(user.uid, newUsername).catch(() =>
+      setUser((curr) => {
+        return { ...curr, name: currUsername };
+      })
+    );
   }
   return (
     <View accessible={true}>
-      <Text style={styles.cuText}>Current username: {username}</Text>
+      <Text style={styles.cuText}>
+        Current username: {'\n'}
+        {user.name}
+      </Text>
       <TextInput
         accessibilityLabel="input to enter new username"
-        style={styles.cuText}
+        style={styles.passwordInputField}
         placeholder="New username"
         onChangeText={handleChange}
       ></TextInput>
-      <View style={styles.cuButton} accessible={true}>
-        <Button title="change username" onPress={handlePress}></Button>
+      <View style={styles.userProfileDeleteBtnView} accessible={true}>
+        <Button
+          accessibiltyRole="button"
+          accessibilityLabel="change username"
+          accessibilityHint="Will change your username"
+          title="change username"
+          onPress={handlePress}></Button>
       </View>
     </View>
   );

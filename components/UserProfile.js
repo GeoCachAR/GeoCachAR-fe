@@ -1,23 +1,35 @@
-import { Text, ScrollView, Button, View, Alert } from "react-native";
-import styles from "../StyleSheet";
-import { useContext, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { deleteUser } from "../utils";
-import { uidContext } from "./Contexts";
+import { Text, ScrollView, Button, View, Alert } from 'react-native';
+import styles from '../StyleSheet';
+import { useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { changePassword } from '../utils';
+import { uidContext } from './Contexts';
 
-export default function UserProfile({ username, password }) {
-  const email = "arghhh@piratemail.com";
-  const currentMap = "Australia";
-  const currentMapPercentage = "20%";
-  const completedMaps = ["London ", "Manchester"];
+export default function UserProfile() {
+  const email = 'Email not found - are you logged in';
+  const currentMap = 'not found';
+  const currentMapPercentage = 'not connected';
+  const completedMaps = 'not connected';
 
   const navigation = useNavigation();
-  const { user } = useContext(uidContext);
+  const { user, setUser } = useContext(uidContext);
+
+  const handleLogoutPress = () => {
+    setUser({});
+    navigation.navigate('GeoCachAR');
+  };
+
+  const handlePasswordChange = () => {
+    return changePassword(user.uid, user.email)
+      .then(() => Alert.alert('Reset email has been sent'))
+      .catch(() => Alert.alert('Reset email failed to send\nPlease try again'));
+  };
 
   return (
     <ScrollView style={styles.userProfileScroll} accessible={true}>
       <Text style={styles.userProfileEntry}>
-        {user.uid} Username: {username}
+        {/* {user.uid}  */}
+        {'\n'}Username: {user.name}
       </Text>
       <View style={styles.userProfileBtnView} accessible={true}>
         <Button
@@ -25,7 +37,7 @@ export default function UserProfile({ username, password }) {
           accessibilityLabel="Click to change username"
           title="Update"
           onPress={() => {
-            navigation.navigate("Change Username");
+            navigation.navigate('Change Username');
           }}
         />
       </View>
@@ -37,41 +49,58 @@ export default function UserProfile({ username, password }) {
           accessibiltyRole="button"
           accessibilityLabel="Click to change email"
           title="Update"
-          onPress={() => Alert.alert("Please contact the developer")}
+          onPress={() => navigation.navigate('Change Email')}
         />
       </View>
-      <Text style={styles.userProfileEntry}>Password: {"********"}</Text>
+      <Text style={styles.userProfileEntry}>Password: {'********'}</Text>
       <View style={styles.userProfileBtnView} accessible={true}>
         <Button
           accessibiltyRole="button"
           accessibilityLabel="Click to change password"
+          accessibiltyHint="Click to receive an email to change your password"
           style={styles.homeBtnView}
           title="Update"
           onPress={() => {
-            navigation.navigate("Change Password");
+            return Alert.alert(
+              'Reset your password?',
+              'Send a password reset email to reset your password',
+              [
+                {
+                  text: 'reset',
+                  onPress: () => handlePasswordChange(),
+                },
+                {
+                  text: 'cancel',
+                  style: 'cancel',
+                },
+              ],
+              { cancelable: true }
+            );
           }}
         />
       </View>
-      <Button
-        accessibilityLabel="Delete account"
-        accessibiltyRole="button"
-        accessibiltyHint="Will delete your account if you proceed."
-        title="Delete Account"
-        onPress={() => {
-          return Alert.alert(
-            "Delete your account?",
-            "Are you sure you'd like to delete your account? This action is irreversible",
-            [
-              {
-                text: "Yes",
-                onPress: () => deleteUser(),
-              },
-              { text: "No", style: "cancel" },
-            ],
-            { cancelable: true }
-          );
-        }}
-      />
+      <View style={styles.userProfileDeleteBtnView} accessible={true}>
+        <Button
+          accessibilityLabel="Delete account"
+          accessibiltyRole="button"
+          accessibiltyHint="Will delete your account if you proceed."
+          title="Delete Account"
+          onPress={() => {
+            return Alert.alert(
+              'Delete your account?',
+              "Are you sure you'd like to delete your account? This action is irreversible",
+              [
+                {
+                  text: 'Yes',
+                  onPress: () => navigation.navigate('Delete User'),
+                },
+                { text: 'No', style: 'cancel' },
+              ],
+              { cancelable: true }
+            );
+          }}
+        />
+      </View>
       <Text style={styles.userProfileHeader}>Currently Playing:</Text>
       <Text style={styles.userProfileEntry}>
         {currentMap} {currentMapPercentage}
@@ -87,7 +116,7 @@ export default function UserProfile({ username, password }) {
           accessibiltyRole="button"
           accessibiltyHint="Will log you out of the app"
           title="Logout"
-          onPress={() => navigation.navigate("GeoCachAR")}
+          onPress={() => handleLogoutPress()}
         />
       </View>
     </ScrollView>
