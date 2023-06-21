@@ -8,6 +8,7 @@ export default function ChangeUsername() {
   const [newUsername, setNewUsername] = useState('');
   const { user, setUser } = useContext(uidContext);
 
+
   function handleChange(text) {
     setNewUsername(text);
   }
@@ -23,18 +24,24 @@ export default function ChangeUsername() {
     );
   }
   return (
-    <View>
+    <View accessible={true}>
       <Text style={styles.cuText}>
         Current username: {'\n'}
         {user.name}
       </Text>
       <TextInput
+        accessibilityLabel="input to enter new username"
         style={styles.passwordInputField}
         placeholder="New username"
         onChangeText={handleChange}
       ></TextInput>
-      <View style={styles.userProfileDeleteBtnView}>
-        <Button title="change username" onPress={handlePress}></Button>
+      <View style={styles.userProfileDeleteBtnView} accessible={true}>
+        <Button
+          accessibiltyRole="button"
+          accessibilityLabel="change username"
+          accessibilityHint="Will change your username"
+          title="change username"
+          onPress={handlePress}></Button>
       </View>
     </View>
   );

@@ -45,15 +45,17 @@ export default function MapList() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView accessible={true}>
       <Text style={styles.availableLocations}>Available Locations</Text>
-
       {locations.length !== 0
         ? locations.map((location) => {
             return (
-              <View key={location.key} style={styles.locationButtons}>
+              <View key={location.key} style={styles.locationButtons} accessible={true}>
                 <Button
-                  title={location.location + ' ' + '-' + ' ' + location.name}
+                  accessibilityRole="button"
+                  accessibilityLabel={`View a map of ${location.name}`}
+                  accessibilityHint={`Will navigate to a map of ${location.name}`}
+                  title={location.location + ' - ' + location.name}
                   onPress={() => {
                     handlePress(location.key);
                   }}
