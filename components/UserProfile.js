@@ -2,9 +2,8 @@ import { Text, ScrollView, Button, View, Alert } from 'react-native';
 import styles from '../StyleSheet';
 import { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { changePassword, deleteUser } from '../utils';
+import { changePassword } from '../utils';
 import { uidContext } from './Contexts';
-import DeleteUser from './DeleteUser';
 
 export default function UserProfile() {
   const email = 'Email not found - are you logged in';
