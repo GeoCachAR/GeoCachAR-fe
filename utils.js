@@ -52,3 +52,11 @@ export const patchCode = (wpNumbers, mapId, uid) => {
 export const completeMap = (uid, mapId) => {
   return URL.patch(`/users/${uid}`, { completed_map: mapId });
 };
+
+export const mapReference = () => {
+  return fetchMapList().then(({maps:mapList}) => {
+    return Object.entries(mapList).reduce((refObj, [mapId, map]) => {
+      return { ...refObj, [mapId]: `${map.mapLocation} - ${map.mapName}` };
+    }, {});
+  });
+};

@@ -1,14 +1,15 @@
 import { Text, ScrollView, Button, View, Alert } from 'react-native';
 import styles from '../StyleSheet';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { changePassword } from '../utils';
+import { changePassword, mapReference } from '../utils';
 import { uidContext } from './Contexts';
 
 export default function UserProfile() {
+  const [currentMapList, setCurrentMapList] = useState({ names: [], perc: [] });
+  const [completedMapList, setCompletedMapList] = useState([]);
+
   const email = 'Email not found - are you logged in';
-  const currentMapPercentage = 'not connected';
-  const completedMaps = 'not connected';
 
   const navigation = useNavigation();
   const { user, setUser } = useContext(uidContext);
@@ -24,29 +25,44 @@ export default function UserProfile() {
       .catch(() => Alert.alert('Reset email failed to send\nPlease try again'));
   };
 
-  /*
-    export const changePassword = (uid, email) => {
-    // return new Promise((resolve, reject) => resolve(email));
-    return URL.patch(`/users/${uid}`, { email });
-};
-    */
+  useEffect(() => {
+    const propArr = [];
+    const percArr = [];
 
-const currentlyPlayingText = () => {
-  const propAr = []
+    mapReference().then((mapRef) => {
+      for (const property in user.current_maps) {
+        propArr.push(mapRef[property]);
+        const percent = Object.values(user.current_maps[property]);
+        percArr.push((100 * percent.filter((x) => x).length) / percent.length);
+      }
+      setCurrentMapList({ names: propArr, perc: percArr });
+    });
+  }, [
+    Object.keys(user.current_maps).length,
+    Object.values(user.current_maps).reduce((sum, map) => {
+      Object.values(map).forEach((wp) => {
+        if (wp) {
+          sum++;
+        }
+      });
+      return sum;
+    }, 0),
+  ]);
 
-   for (const property in user.current_maps) {
-    //console.log(property);
-    propAr.push(property)
-    console.log(propAr);
-  }
+  useEffect(() => {
+    const compMapArr = [];
 
-}
-
+    mapReference().then((mapRef) => {
+      for (const property in user.maps_completed) {
+        compMapArr.push(mapRef[property]);
+      }
+      setCompletedMapList(compMapArr);
+    });
+  }, [Object.keys(user.maps_completed).length]);
 
   return (
     <ScrollView style={styles.userProfileScroll} accessible={true}>
       <Text style={styles.userProfileEntry}>
-        {/* {user.uid}  */}
         {'\n'}Username: {user.name}
       </Text>
       <View style={styles.userProfileBtnView} accessible={true}>
@@ -120,16 +136,30 @@ const currentlyPlayingText = () => {
         />
       </View>
       <Text style={styles.userProfileHeader}>Currently Playing:</Text>
-      <Text style={styles.userProfileEntry}>
-        {console.log(user)}
-        {Object.keys(user.current_maps)} {currentMapPercentage}
-        {currentlyPlayingText()}
-      </Text>
-      <View accessible={true} style={styles.userProfileBtnView}>
-        <Button title="Continue" />
+      <View style={styles.userProfileEntry}>
+        {currentMapList.names.length > 0
+          ? currentMapList.names.map((map, index) => {
+              return (
+                <Text key={map} style={styles.cpText}>
+                  {`${map} - ${currentMapList.perc[index]}% \n`}
+                </Text>
+              );
+            })
+          : ''}
       </View>
+      {/* <View accessible={true} style={styles.userProfileBtnView}>
+        <Button title="Continue" />
+      </View> */}
       <Text style={styles.userProfileHeader}>Completed Maps:</Text>
-      <Text style={styles.userProfileEntry}>{completedMaps}</Text>
+      <View style={styles.userProfileEntry}>
+        {completedMapList.map((map) => {
+          return (
+            <Text key={map} style={styles.cpText}>
+              {map + '\n'}
+            </Text>
+          );
+        })}
+      </View>
       <View accessible={true} style={styles.userProfileBtnView}>
         <Button
           accessibilityLabel="Logout"

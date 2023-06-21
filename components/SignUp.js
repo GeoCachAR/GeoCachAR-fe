@@ -17,10 +17,8 @@ export default function SignUp({ navigation }) {
       <Text style={styles.tagline}>Enter Sign Up Details</Text>
       <View accessible={true}>
         <Text style={styles.formText}>Enter username:</Text>
-        <Text style={styles.formText}>Enter password:</Text>
         <TextInput
-          accessibilityLabel="sign up password"
-        <TextInput accessibilityLabel="sign up username" onChangeText={(text)=>{setUsername(text)}} style={styles.input} placeholder="Enter username" />
+         accessibilityLabel="sign up username" onChangeText={(text)=>{setUsername(text)}} style={styles.input} placeholder="Enter username" />
         <Text style={styles.formText}>Enter email:</Text>
         <TextInput 
           accessibilityLabel="sign up email address"
