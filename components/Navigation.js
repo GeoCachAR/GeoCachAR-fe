@@ -3,6 +3,7 @@ import Home from "./Home";
 import MapList from "./MapList";
 import UserProfile from "./UserProfile";
 import { Feather } from "@expo/vector-icons";
+import { Button } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,12 +15,16 @@ export default function MyTabs({
 }) {
   return (
     <Tab.Navigator
+      accessibilityRole="menu"
+      menubar={Tab.Navigator}
       screenOptions={(route) => ({
         tabBarLabelStyle: { fontSize: 16 },
       })}
     >
       <Tab.Screen
-        accessibilityLabel="Press to be brough back to home"
+        accessibilityRole="menuitem"
+        accessibilityLabel="Home"
+        accessibilityHint="Will navigate you to the home screen."
         name="Home"
         component={Home}
         options={{
@@ -30,7 +35,9 @@ export default function MyTabs({
         }}
       />
       <Tab.Screen
-        accessibilityLabel="Press to view maps"
+        accessibilityRole="menuitem"
+        accessibilityLabel="maps"
+        accessibilityHint="Will navigate you to the maps screen."
         name="Maps"
         component={MapList}
         options={{
@@ -41,7 +48,9 @@ export default function MyTabs({
         }}
       />
       <Tab.Screen
-        accessibilityLabel="Press to view your  profile"
+        accessibilityRole="menuitem"
+        accessibilityLabel="profile"
+        accessibilityHint="Will navigate you to your profile"
         name="Profile"
         options={{
           tabBarLabel: "Profile",

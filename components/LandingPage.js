@@ -11,6 +11,7 @@ export default function LandingPage({ navigation }) {
       <View style={styles.button}>
         <Button
           title="Log In"
+          accessibilityRole="button"
           accessibilityLabel="Log in"
           onPress={() => {
             navigation.navigate("Log In");
@@ -21,6 +22,7 @@ export default function LandingPage({ navigation }) {
         <Button
           style={styles.button}
           title="Sign Up"
+          accessibilityRole="button"
           accessibilityLabel="Sign Up"
           onPress={() => {
             navigation.navigate("Sign Up");

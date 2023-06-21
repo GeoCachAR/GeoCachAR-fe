@@ -48,6 +48,7 @@ export default function LogIn({ navigation }) {
       </View>
       <Button
         title="Log In"
+        accessibilityRole="button"
         accessibilityLabel="Log in"
         onPress={() => {
           handleLogin()

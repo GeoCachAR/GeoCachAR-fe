@@ -66,6 +66,7 @@ export default function MapScreen({ route }) {
               return (
                 <Marker
                   accessibilityLabel="Waypoint on the map"
+                  accessibilityHint="Will give the hint of the waypoint selected"
                   key={index}
                   onPress={() => {
                     handleAlert(index);
@@ -86,7 +87,8 @@ export default function MapScreen({ route }) {
       )}
       <View style={styles.launchCamera} accessible={true}>
         <Button
-          accessibilityLabel="Press to Launch Camera"
+          accessibilityLabel="Launch Camera"
+          accessibilityHint="Will launch your default browser and ask for the camera to be enabaled"
           title="Launch Camera"
           onPress={() => {
             Linking.openURL(map.arUrl);
@@ -136,6 +138,7 @@ export default function MapScreen({ route }) {
           : ""}
         <Button
           accessibilityLabel="Press to submit all codes"
+          accessibilityHint="Will submit all codes and let you know if they were correct"
           title="Submit All Codes!"
           onPress={() => {
             return Object.values(wpNumbers).every((x) => x)

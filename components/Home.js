@@ -8,7 +8,8 @@ export default function Home() {
   return (
     <View style={styles.homeContainer} accessible={true}>
       <Image
-        accessibilityLabel="A picture of a pirate"
+        accessibilityRole="image"
+        accessibilityLabel="A picture of a cartoon pirate"
         style={styles.homeImage}
         accessible={true}
         source={require("../assets/pirate.jpeg")}
@@ -17,20 +18,26 @@ export default function Home() {
       <Text style={styles.taglineHome}>What would you like to do...</Text>
       <View style={styles.homeBtnView} accessible={true}>
         <Button
+          accessibilityRole="button"
           accessibilityLabel="resume current treasure hunt"
+          accessibilityHint="Will bring you to your current treasure hunt."
           title="Resume current treasure hunt"
         />
       </View>
       <View style={styles.homeBtnView} accessible={true}>
         <Button
-          accessibilityLabel="view all treasure hunts"
+          accessibilityRole="button"
+          accessibilityLabel="View all treasure hunts"
+          accessibilityHint="Will Show a list of all available treasure hunts."
           title="View all treasure hunts"
           onPress={() => navigation.navigate("Maps")}
         />
       </View>
       <View style={styles.homeBtnView} accessible={true}>
         <Button
-          accessibilityLabel="view your profile"
+          accessibilityRole="button"
+          accessibilityLabel="Profile"
+          accessibilityHint="Will navigate you, to your profile."
           title="View my profile"
           onPress={() => navigation.navigate("Profile")}
         />

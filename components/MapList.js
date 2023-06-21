@@ -38,7 +38,9 @@ export default function MapList() {
             accessible={true}
           >
             <Button
+              accessibilityRole="button"
               accessibilityLabel={`View a map of ${location.name}`}
+              accessibilityHint={`Will navigate to a map of ${location.name}`}
               title={location.location + " " + "-" + " " + location.name}
               onPress={() => {
                 navigation.navigate("Map Screen", { mapId: location.key });

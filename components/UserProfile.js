@@ -21,6 +21,7 @@ export default function UserProfile({ username, password }) {
       </Text>
       <View style={styles.userProfileBtnView} accessible={true}>
         <Button
+          accessibiltyRole="button"
           accessibilityLabel="Click to change username"
           title="Update"
           onPress={() => {
@@ -33,6 +34,7 @@ export default function UserProfile({ username, password }) {
       </Text>
       <View style={styles.userProfileBtnView} accessible={true}>
         <Button
+          accessibiltyRole="button"
           accessibilityLabel="Click to change email"
           title="Update"
           onPress={() => Alert.alert("Please contact the developer")}
@@ -41,6 +43,7 @@ export default function UserProfile({ username, password }) {
       <Text style={styles.userProfileEntry}>Password: {"********"}</Text>
       <View style={styles.userProfileBtnView} accessible={true}>
         <Button
+          accessibiltyRole="button"
           accessibilityLabel="Click to change password"
           style={styles.homeBtnView}
           title="Update"
@@ -50,7 +53,9 @@ export default function UserProfile({ username, password }) {
         />
       </View>
       <Button
-        accessibilityLabel="Click to delete account"
+        accessibilityLabel="Delete account"
+        accessibiltyRole="button"
+        accessibiltyHint="Will delete your account if you proceed."
         title="Delete Account"
         onPress={() => {
           return Alert.alert(
@@ -78,7 +83,9 @@ export default function UserProfile({ username, password }) {
       <Text style={styles.userProfileEntry}>{completedMaps}</Text>
       <View accessible={true} style={styles.userProfileBtnView}>
         <Button
-          accessibilityLabel="Click to logout"
+          accessibilityLabel="Logout"
+          accessibiltyRole="button"
+          accessibiltyHint="Will log you out of the app"
           title="Logout"
           onPress={() => navigation.navigate("GeoCachAR")}
         />
