@@ -13,10 +13,8 @@ import { useContext, useEffect, useState } from "react";
 import { fetchMap, patchCode } from "../utils";
 import { uidContext } from "./Contexts.js";
 
-export default function MapScreen({ route }) {
+export default function MapScreen({ route, navigation }) {
     const { mapId } = route.params;
-    // mapId = "103";
-    const [congratsMessage, setCongratsMessage] = useState("");
     const [map, setMap] = useState(false);
     const [wpNumbers, setWpNumbers] = useState(false);
     const [enteredCode, setEnteredCode] = useState("");
@@ -30,7 +28,7 @@ export default function MapScreen({ route }) {
     }, []);
 
     function handleAlert(wp) {
-        return Alert.alert(`You pressed ${wp}`, map.waypoints[wp].description);
+        return Alert.alert(`Clue ${Number(wp)+1}`, map.waypoints[wp].description);
     }
 
     return (
@@ -55,7 +53,7 @@ export default function MapScreen({ route }) {
                                         onPress={() => {
                                             handleAlert(index);
                                         }}
-                                        title={index}
+                                        title={String(Number(index)+1)}
                                         description=""
                                         coordinate={{
                                             latitude: waypoint.latitude,
@@ -87,7 +85,7 @@ export default function MapScreen({ route }) {
                                   style={styles.mapScreenDetails}
                               >
                                   <Text style={styles.mapScreenNumber}>
-                                      {index}
+                                      {Number(index)+1}
                                   </Text>
                                   <TextInput
                                       maxLength={3}
@@ -114,14 +112,24 @@ export default function MapScreen({ route }) {
                                                           },
                                                           mapId,
                                                           user.uid
-                                                      );
+                                                      ).then(()=>{
+                                                Alert.alert('Correct code entered!', '', [ {
+                                                    text: 'ok',
+                                                    style: 'cancel',
+                                                  }], {cancelable: true})
+                                              });
                                                       return {
                                                           ...curr,
                                                           [index]: true,
                                                       };
                                                   }
+                                                  Alert.alert('Sorry, wrong code, try again.', '', [ {
+                                                    text: 'ok',
+                                                    style: 'cancel',
+                                                  }], {cancelable: true})
                                                   return curr;
-                                              });
+                                                  
+                                              })
                                           }}
                                       />
                                   </View>
@@ -134,14 +142,22 @@ export default function MapScreen({ route }) {
                         title="Submit All Codes!"
                         onPress={() => {
                             return Object.values(wpNumbers).every((x) => x)
-                                ? setCongratsMessage(
-                                      "Congratulations! You cracked the code and completed the map!"
-                                  )
-                                : setCongratsMessage("");
+                                ? Alert.alert('Congratulations!!! You\'ve cracked the codes and completed map!', 'What would you like to do now?', [ {
+                                    text: 'Return to Home',
+                                    onPress: () => navigation.navigate('Home'),
+                                  }, {
+                                    text: 'View other maps',
+                                    onPress: () => navigation.navigate('Maps'),
+                                  }], {cancelable: true})
+                                
+                               : Alert.alert('You\'ve not yet unlocked all the codes...', '', [ {
+                                text: 'Resume',
+                                style: 'cancel' }
+                            ], {cancelable: true});
+                                
                         }}
                     />
                 </View>
-                <Text style={styles.testtest}>{congratsMessage}</Text>
             </ScrollView>
         </>
     );

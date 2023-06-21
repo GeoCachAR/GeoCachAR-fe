@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   mapScreenDetails: {
     paddingTop: 5,
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginTop: 20,
   },
   mapScreenInput: {
@@ -97,13 +98,15 @@ const styles = StyleSheet.create({
   },
   mapScreenNumber: {
     paddingTop: 18,
-    paddingLeft: 45,
-    paddingRight: 20,
+    paddingLeft: 20,
+    // paddingRight: 20,
     fontSize: 20,
   },
   mapScreenBtn: {
     paddingTop: 14,
+    paddingRight: 40,
     fontSize: 20,
+    width: 115,
   },
   launchCamera: {
     marginTop: 20,
@@ -147,6 +150,7 @@ const styles = StyleSheet.create({
   },
   submitAllCodesView: {
     marginTop: 30,
+    marginBottom: 30,
     alignItems: 'center',
   },
   passwordReset: {
