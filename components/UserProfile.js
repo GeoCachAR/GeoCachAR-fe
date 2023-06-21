@@ -7,7 +7,6 @@ import { uidContext } from './Contexts';
 
 export default function UserProfile() {
   const email = 'Email not found - are you logged in';
-  const currentMap = 'not found';
   const currentMapPercentage = 'not connected';
   const completedMaps = 'not connected';
 
@@ -31,6 +30,18 @@ export default function UserProfile() {
     return URL.patch(`/users/${uid}`, { email });
 };
     */
+
+const currentlyPlayingText = () => {
+  const propAr = []
+
+   for (const property in user.current_maps) {
+    //console.log(property);
+    propAr.push(property)
+    console.log(propAr);
+  }
+
+}
+
 
   return (
     <ScrollView style={styles.userProfileScroll}>
@@ -100,11 +111,13 @@ export default function UserProfile() {
       </View>
       <Text style={styles.userProfileHeader}>Currently Playing:</Text>
       <Text style={styles.userProfileEntry}>
-        {currentMap} {currentMapPercentage}
+        {console.log(user)}
+        {Object.keys(user.current_maps)} {currentMapPercentage}
+        {currentlyPlayingText()}
       </Text>
-      <View style={styles.userProfileBtnView}>
+      {/* <View style={styles.userProfileBtnView}>
         <Button title="Continue" />
-      </View>
+      </View> */}
       <Text style={styles.userProfileHeader}>Completed Maps:</Text>
       <Text style={styles.userProfileEntry}>{completedMaps}</Text>
       <View style={styles.userProfileBtnView}>

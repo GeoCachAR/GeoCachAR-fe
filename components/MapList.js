@@ -40,7 +40,7 @@ export default function MapList() {
     })
     
     navigation.navigate('Map Screen', {
-      mapId,
+      mapId, mapName
     });
   }
 
