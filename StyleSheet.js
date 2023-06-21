@@ -149,6 +149,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
     alignItems: 'center',
   },
+  passwordReset: {
+    margin: 20,
+    textAlign: 'center',
+  }
 });
 
 export default styles;

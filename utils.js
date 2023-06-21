@@ -1,8 +1,5 @@
-import one from "./assets/input.js";
-import two from "./assets/input2.js";
-import three from "./assets/output.js";
-import axios from "axios";
-const URL = axios.create({ baseURL: "https://geocachar.onrender.com/api" });
+import axios from 'axios';
+const URL = axios.create({ baseURL: 'https://geocachar.onrender.com/api' });
 
 export const changeUsername = (uid, name) => {
     return URL.patch(`/users/${uid}`, { name }).then(({ data }) => data.name);
@@ -13,15 +10,16 @@ export const changeEmail = (newEmail, oldEmail, uid, password) => {
     return URL.patch(`/users/${uid}`, { newEmail, oldEmail, password });
 };
 
-export const changePassword = (uid, newPassword, password, email) => {
-    return new Promise((resolve, reject) => resolve(newPassword));
-    if (!uid) uid = "8Y3o27XpIAfLeOayWqqd3zC4ec83";
-    return URL.patch(`/users/${uid}`, { newPassword, password, email });
+export const changePassword = (uid = '007', email) => {
+  return URL.patch(`/users/${uid}`, { email });
 };
 
-export const deleteUser = (uid) => {
-    return;
-    return URL.delete(`/users/${uid}`, { email, password });
+export const deleteUser = (uid, email, password) => {
+  return axios({
+    method: 'delete',
+    url: `https://geocachar.onrender.com/api/users/${uid}`,
+    data: { email, password },
+  });
 };
 
 export const fetchMap = (mapId) => {

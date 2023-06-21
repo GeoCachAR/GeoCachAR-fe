@@ -2,8 +2,9 @@ import { Text, ScrollView, Button, View, Alert } from 'react-native';
 import styles from '../StyleSheet';
 import { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { deleteUser } from '../utils';
+import { changePassword, deleteUser } from '../utils';
 import { uidContext } from './Contexts';
+import DeleteUser from './DeleteUser';
 
 export default function UserProfile() {
   const email = 'Email not found - are you logged in';
@@ -18,6 +19,19 @@ export default function UserProfile() {
     setUser({});
     navigation.navigate('GeoCachAR');
   };
+
+  const handlePasswordChange = () => {
+    return changePassword(user.uid, user.email)
+      .then(() => Alert.alert('Reset email has been sent'))
+      .catch(() => Alert.alert('Reset email failed to send\nPlease try again'));
+  };
+
+  /*
+    export const changePassword = (uid, email) => {
+    // return new Promise((resolve, reject) => resolve(email));
+    return URL.patch(`/users/${uid}`, { email });
+};
+    */
 
   return (
     <ScrollView style={styles.userProfileScroll}>
@@ -48,7 +62,21 @@ export default function UserProfile() {
           style={styles.homeBtnView}
           title="Update"
           onPress={() => {
-            navigation.navigate('Change Password');
+            return Alert.alert(
+              'Reset your password?',
+              'Send a password reset email to reset your password',
+              [
+                {
+                  text: 'reset',
+                  onPress: () => handlePasswordChange(),
+                },
+                {
+                  text: 'cancel',
+                  style: 'cancel',
+                },
+              ],
+              { cancelable: true }
+            );
           }}
         />
       </View>
@@ -62,7 +90,7 @@ export default function UserProfile() {
               [
                 {
                   text: 'Yes',
-                  onPress: () => deleteUser(),
+                  onPress: () => navigation.navigate('Delete User'),
                 },
                 { text: 'No', style: 'cancel' },
               ],
