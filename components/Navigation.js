@@ -1,9 +1,9 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./Home";
-import MapList from "./MapList";
-import UserProfile from "./UserProfile";
-import { Feather } from "@expo/vector-icons";
-import { Button } from "react-native";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from './Home';
+import MapList from './MapList';
+import UserProfile from './UserProfile';
+import { Feather } from '@expo/vector-icons';
+import { Button } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ export default function MyTabs({
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" color={color} size={size} />
           ),
@@ -41,7 +41,7 @@ export default function MyTabs({
         name="Maps"
         component={MapList}
         options={{
-          tabBarLabel: "Maps",
+          tabBarLabel: 'Maps',
           tabBarIcon: ({ color, size }) => (
             <Feather name="map" color={color} size={size} />
           ),
@@ -53,7 +53,7 @@ export default function MyTabs({
         accessibilityHint="Will navigate you to your profile"
         name="Profile"
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
             <Feather name="user" color={color} size={size} />
           ),

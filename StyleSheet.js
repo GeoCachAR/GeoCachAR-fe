@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  cpText: {
+    fontSize: 20,
+  },
   homeContainer: {
     flex: 1,
     backgroundColor: '#fff',
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
   passwordReset: {
     margin: 20,
     textAlign: 'center',
-  }
+  },
 });
 
 export default styles;
