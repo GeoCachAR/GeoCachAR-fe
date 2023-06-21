@@ -2,12 +2,14 @@ import { Text, Button, ScrollView, View } from 'react-native';
 import styles from '../StyleSheet';
 import { useNavigation } from '@react-navigation/native';
 import { fetchMapList } from '../utils';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { uidContext } from './Contexts';
 
 export default function MapList() {
   const navigation = useNavigation();
   const [mapList, setMapList] = useState({});
   const [locations, setLocations] = useState([]);
+  const {user, setUser} = useContext(uidContext)
 
   useEffect(() => {
     fetchMapList().then((data) => setMapList(data.maps));
@@ -25,6 +27,23 @@ export default function MapList() {
     setLocations(locationsArr);
   }, [Object.keys(mapList).length]);
 
+  const handlePress = (mapId) => {
+    setUser((current) => {
+      if (current.current_maps.hasOwnProperty(mapId)) {
+        return current
+      } 
+      const newCurrentMaps = {...current.current_maps, [mapId]:Object.keys(mapList[mapId].waypoints).reduce((acc, waypoint)=>{
+        return {...acc, [waypoint]:false}
+      }, {})}
+
+      return {...current, current_maps : newCurrentMaps}
+    })
+    
+    navigation.navigate('Map Screen', {
+      mapId,
+    });
+  }
+
   return (
     <ScrollView>
       <Text style={styles.availableLocations}>Available Locations</Text>
@@ -36,9 +55,7 @@ export default function MapList() {
                 <Button
                   title={location.location + ' ' + '-' + ' ' + location.name}
                   onPress={() => {
-                    navigation.navigate('Map Screen', {
-                      mapId: location.key,
-                    });
+                    handlePress(location.key);
                   }}
                 />
               </View>
