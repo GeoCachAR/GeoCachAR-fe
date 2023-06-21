@@ -10,7 +10,7 @@ import {
 import styles from "../StyleSheet";
 import MapView, { Marker } from "react-native-maps";
 import { useContext, useEffect, useState } from "react";
-import { fetchMap, patchCode } from "../utils";
+import { completeMap, fetchMap, patchCode } from "../utils";
 import { uidContext } from "./Contexts.js";
 
 export default function MapScreen({ route, navigation }) {
@@ -26,6 +26,27 @@ export default function MapScreen({ route, navigation }) {
             setWpNumbers(user.current_maps[mapId]);
         });
     }, []);
+
+    const handlePress = () => {
+            if (Object.values(wpNumbers).every(x => x)) {
+            completeMap(user.uid, mapId).then(() => {
+                Alert.alert('Congratulations!!! You\'ve cracked the codes and completed map!', 'What would you like to do now?', [ {
+                    text: 'Return to Home',
+                    onPress: () => navigation.navigate('Home'),
+                  }, {
+                    text: 'View other maps',
+                    onPress: () => navigation.navigate('Maps'),
+                  }], {cancelable: true})
+            }).catch(() => {
+                return Alert.alert("Error, unable to complete", "Please try again")
+            }
+            )} else {
+                Alert.alert('You\'ve not yet unlocked all the codes...', '', [ {
+                    text: 'Resume',
+                    style: 'cancel' }
+                ], {cancelable: true})
+            }
+    }
 
     function handleAlert(wp) {
         return Alert.alert(`Clue ${Number(wp)+1}`, map.waypoints[wp].description);
@@ -141,20 +162,7 @@ export default function MapScreen({ route, navigation }) {
                     <Button
                         title="Submit All Codes!"
                         onPress={() => {
-                            return Object.values(wpNumbers).every((x) => x)
-                                ? Alert.alert('Congratulations!!! You\'ve cracked the codes and completed map!', 'What would you like to do now?', [ {
-                                    text: 'Return to Home',
-                                    onPress: () => navigation.navigate('Home'),
-                                  }, {
-                                    text: 'View other maps',
-                                    onPress: () => navigation.navigate('Maps'),
-                                  }], {cancelable: true})
-                                
-                               : Alert.alert('You\'ve not yet unlocked all the codes...', '', [ {
-                                text: 'Resume',
-                                style: 'cancel' }
-                            ], {cancelable: true});
-                                
+                            handlePress()
                         }}
                     />
                 </View>
