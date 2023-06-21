@@ -70,3 +70,7 @@ export const signup = (username, email, password) => {
 export const patchCode = (wpNumbers, mapId, uid) => {
     return URL.patch(`/users/${uid}`, { "current_map": { [mapId]: wpNumbers } });
 };
+
+export const completeMap = (uid, mapId) => {
+    return URL.patch(`/users/${uid}`, {"completed_map": mapId})
+}

@@ -10,7 +10,7 @@ import {
 import styles from "../StyleSheet";
 import MapView, { Marker } from "react-native-maps";
 import { useContext, useEffect, useState } from "react";
-import { fetchMap, patchCode } from "../utils";
+import { completeMap, fetchMap, patchCode } from "../utils";
 import { uidContext } from "./Contexts.js";
 
 export default function MapScreen({ route }) {
@@ -28,6 +28,16 @@ export default function MapScreen({ route }) {
             setWpNumbers(user.current_maps[mapId]);
         });
     }, []);
+
+    const handlePress = () => {
+            if (Object.values(wpNumbers).every(x => x)) {
+            completeMap(user.uid, mapId).then(() => {
+                setCongratsMessage("Congratulations! You cracked the code and completed the map!")
+            }).catch(() => {
+                return Alert.alert("Error, unable to complete", "Please try again")
+            }
+            )}
+    }
 
     function handleAlert(wp) {
         return Alert.alert(`You pressed ${wp}`, map.waypoints[wp].description);
@@ -133,11 +143,7 @@ export default function MapScreen({ route }) {
                     <Button
                         title="Submit All Codes!"
                         onPress={() => {
-                            return Object.values(wpNumbers).every((x) => x)
-                                ? setCongratsMessage(
-                                      "Congratulations! You cracked the code and completed the map!"
-                                  )
-                                : setCongratsMessage("");
+                            handlePress()
                         }}
                     />
                 </View>
