@@ -6,7 +6,6 @@ export const changeUsername = (uid, name) => {
 };
 
 export const changeEmail = (newEmail, oldEmail, uid, password) => {
-  console.log(newEmail, oldEmail, password, uid);
   return URL.patch(`/users/${uid}`, { newEmail, oldEmail, password });
 };
 
