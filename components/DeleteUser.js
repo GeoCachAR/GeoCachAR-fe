@@ -9,10 +9,9 @@ export default function DeleteUser({ navigation }) {
   const { user, setUser } = useContext(uidContext);
 
   const handlePress = () => {
-    console.log(user.uid, user.email, password);
     return deleteUser(user.uid, user.email, password)
       .then(() => {
-        setUser({});
+        setUser({ current_maps: [], maps_completed: [] });
         navigation.navigate('GeoCachAR');
       })
       .catch((err) => {

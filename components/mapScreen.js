@@ -6,18 +6,18 @@ import {
   View,
   Linking,
   Alert,
-} from 'react-native';
-import styles from '../StyleSheet';
-import MapView, { Marker } from 'react-native-maps';
-import { useContext, useEffect, useState } from 'react';
-import { completeMap, fetchMap, mapReference, patchCode } from '../utils';
-import { uidContext } from './Contexts.js';
+} from "react-native";
+import styles from "../StyleSheet";
+import MapView, { Marker } from "react-native-maps";
+import { useContext, useEffect, useState } from "react";
+import { completeMap, fetchMap, mapReference, patchCode } from "../utils";
+import { uidContext } from "./Contexts.js";
 
 export default function MapScreen({ route, navigation }) {
   const { mapId } = route.params;
   const [map, setMap] = useState(false);
   const [wpNumbers, setWpNumbers] = useState(false);
-  const [enteredCode, setEnteredCode] = useState('');
+  const [enteredCode, setEnteredCode] = useState("");
   const { user, setUser } = useContext(uidContext);
   useEffect(() => {
     fetchMap(mapId).then((newMap) => {
@@ -49,11 +49,11 @@ export default function MapScreen({ route, navigation }) {
           Alert.alert(
             "Congratulations!!! You've cracked the codes and completed map!",
             // 'What would you like to do now?',
-            '',
+            "",
             [
               {
-                text: 'Return to Home',
-                onPress: () => navigation.navigate('Home'),
+                text: "Return to Home",
+                onPress: () => navigation.navigate("Home"),
               },
               // {
               //   text: 'View other maps',
@@ -64,16 +64,16 @@ export default function MapScreen({ route, navigation }) {
           );
         })
         .catch(() => {
-          return Alert.alert('Error, unable to complete', 'Please try again');
+          return Alert.alert("Error, unable to complete", "Please try again");
         });
     } else {
       Alert.alert(
         "You've not yet unlocked all the codes...",
-        '',
+        "",
         [
           {
-            text: 'Resume',
-            style: 'cancel',
+            text: "Resume",
+            style: "cancel",
           },
         ],
         { cancelable: true }
@@ -123,7 +123,10 @@ export default function MapScreen({ route, navigation }) {
       ) : (
         <Text>map loading</Text>
       )}
-      <View style={styles.launchCamera} accessible={true}>
+      <View
+        style={styles.launchCamera}
+        accessible={true}
+      >
         <Button
           accessibilityLabel="Launch Camera"
           accessibilityHint="Will launch your default browser and ask for the camera to be enabaled"
@@ -133,9 +136,12 @@ export default function MapScreen({ route, navigation }) {
           }}
         />
       </View>
-      <ScrollView style={styles.userProfileScroll} accessible={true}>
+      <ScrollView
+        style={styles.userProfileScroll}
+        accessible={true}
+      >
         {wpNumbers
-          ? Object.entries(wpNumbers).map(([index, number]) => {
+          ? Object.entries(wpNumbers).map(([index, isUnlocked]) => {
               return (
                 <View
                   key={index}
@@ -148,26 +154,40 @@ export default function MapScreen({ route, navigation }) {
                   <TextInput
                     accessibilityLabel="Enter your numeric code"
                     maxLength={3}
-                    placeholder="submit your code..."
+                    placeholder={
+                      isUnlocked ? "Unlocked" : "Submit your code..."
+                    }
                     keyboardType="numeric"
                     style={styles.mapScreenInput}
                     onChangeText={(value) => setEnteredCode(value)}
+                    readOnly={isUnlocked}
+                    value={isUnlocked ? "" : undefined}
                   />
-                  <View style={styles.mapScreenBtn} accessible={true}>
+                  <View
+                    style={styles.mapScreenBtn}
+                    accessible={true}
+                  >
                     <Button
                       accessibilityLabel="Press to save your numeric code"
-                      title={number ? 'Done' : 'Unlock'}
+                      title={isUnlocked ? "Done" : "Unlock"}
+                      disabled={isUnlocked}
                       onPress={() => {
                         setUser((curr) => {
-                          const newWp = { ...wpNumbers, [index]: true };
-                          const newCurrentMaps = {
-                            ...curr.current_maps,
-                            [mapId]: newWp,
-                          };
-                          return {
-                            ...curr,
-                            current_maps: newCurrentMaps,
-                          };
+                          if (enteredCode == map.waypoints[index].code) {
+                            const newWp = {
+                              ...wpNumbers,
+                              [index]: true,
+                            };
+                            const newCurrentMaps = {
+                              ...curr.current_maps,
+                              [mapId]: newWp,
+                            };
+                            return {
+                              ...curr,
+                              current_maps: newCurrentMaps,
+                            };
+                          }
+                          return curr;
                         });
                         setWpNumbers((curr) => {
                           if (enteredCode == map.waypoints[index].code) {
@@ -181,15 +201,17 @@ export default function MapScreen({ route, navigation }) {
                               user.uid
                             ).then(() => {
                               Alert.alert(
-                                'Correct code entered!',
-                                '',
+                                "Correct code entered!",
+                                "",
                                 [
                                   {
-                                    text: 'ok',
-                                    style: 'cancel',
+                                    text: "ok",
+                                    style: "cancel",
                                   },
                                 ],
-                                { cancelable: true }
+                                {
+                                  cancelable: true,
+                                }
                               );
                             });
                             return {
@@ -198,12 +220,12 @@ export default function MapScreen({ route, navigation }) {
                             };
                           }
                           Alert.alert(
-                            'Sorry, wrong code, try again.',
-                            '',
+                            "Sorry, wrong code, try again.",
+                            "",
                             [
                               {
-                                text: 'ok',
-                                style: 'cancel',
+                                text: "ok",
+                                style: "cancel",
                               },
                             ],
                             { cancelable: true }
@@ -216,8 +238,11 @@ export default function MapScreen({ route, navigation }) {
                 </View>
               );
             })
-          : ''}
-        <View style={styles.submitAllCodesView} accessible={true}>
+          : ""}
+        <View
+          style={styles.submitAllCodesView}
+          accessible={true}
+        >
           <Button
             accessibilityLabel="Press to submit all codes"
             accessibilityHint="Will submit all codes and let you know if they were correct"
