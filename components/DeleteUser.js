@@ -1,24 +1,23 @@
-import { Text, View, Button, TextInput, Alert } from 'react-native';
-import styles from '../StyleSheet.js';
-import { useState, useContext } from 'react';
-import { deleteUser } from '../utils.js';
-import { uidContext } from './Contexts.js';
+import { Text, View, Button, TextInput, Alert } from "react-native";
+import styles from "../StyleSheet.js";
+import { useState, useContext } from "react";
+import { deleteUser } from "../utils.js";
+import { uidContext } from "./Contexts.js";
 
 export default function DeleteUser({ navigation }) {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const { user, setUser } = useContext(uidContext);
 
   const handlePress = () => {
     return deleteUser(user.uid, user.email, password)
       .then(() => {
         setUser({ current_maps: [], maps_completed: [] });
-        navigation.navigate('GeoCachAR');
+        navigation.navigate("GeoCachAR");
       })
       .catch((err) => {
-        console.log(err);
         return Alert.alert(
-          'Error deleting account',
-          'Please check your password is correct',
+          "Error deleting account",
+          "Please check your password is correct",
           [],
           { cancelable: true }
         );
@@ -29,7 +28,7 @@ export default function DeleteUser({ navigation }) {
     <View>
       <Text style={styles.passwordTextField}>Delete your account</Text>
       <Text style={styles.passwordTextField}>
-        Enter your password below to delete your account:{' '}
+        Enter your password below to delete your account:{" "}
       </Text>
       <TextInput
         style={styles.passwordInputField}
@@ -43,14 +42,14 @@ export default function DeleteUser({ navigation }) {
           title="delete my account"
           onPress={() =>
             Alert.alert(
-              'Are you sure?',
-              '',
+              "Are you sure?",
+              "",
               [
                 {
-                  text: 'Yes',
+                  text: "Yes",
                   onPress: () => handlePress(),
                 },
-                { text: 'No', style: 'cancel' },
+                { text: "No", style: "cancel" },
               ],
               { cancelable: true }
             )

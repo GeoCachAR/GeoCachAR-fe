@@ -14,6 +14,7 @@ export default function ChangeUsername() {
     setNewUsername(text);
   }
   function handlePress() {
+    if (newUsername === "") return Alert.alert("Please enter a username");
     const currUsername = user.name;
     setUser((curr) => {
       return { ...curr, name: newUsername };
@@ -41,7 +42,10 @@ export default function ChangeUsername() {
         placeholder="New username"
         onChangeText={handleChange}
       ></TextInput>
-      <View style={styles.userProfileDeleteBtnView} accessible={true}>
+      <View
+        style={styles.userProfileDeleteBtnView}
+        accessible={true}
+      >
         <Button
           accessibiltyRole="button"
           accessibilityLabel="change username"
