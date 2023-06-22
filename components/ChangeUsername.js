@@ -3,8 +3,10 @@ import styles from "../StyleSheet.js";
 import { useState, useContext } from "react";
 import { changeUsername } from "../utils.js";
 import { uidContext } from "./Contexts.js";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ChangeUsername() {
+  const navigation = useNavigation();
   const [newUsername, setNewUsername] = useState("");
   const { user, setUser } = useContext(uidContext);
 
@@ -17,11 +19,16 @@ export default function ChangeUsername() {
     setUser((curr) => {
       return { ...curr, name: newUsername };
     });
-    changeUsername(user.uid, newUsername).catch(() =>
-      setUser((curr) => {
-        return { ...curr, name: currUsername };
+    changeUsername(user.uid, newUsername)
+      .then(() => {
+        navigation.navigate("Profile");
       })
-    );
+      .catch(() => {
+        Alert.alert("Failed to update username, please try again!");
+        setUser((curr) => {
+          return { ...curr, name: currUsername };
+        });
+      });
   }
   return (
     <View accessible={true}>
