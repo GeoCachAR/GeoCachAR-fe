@@ -1,13 +1,14 @@
-import { Text, View, Button, TextInput } from 'react-native';
-import styles from '../StyleSheet.js';
-import { useState, useContext } from 'react';
-import { changeUsername } from '../utils.js';
-import { uidContext } from './Contexts.js';
+import { Text, View, Button, TextInput, Alert } from "react-native";
+import styles from "../StyleSheet.js";
+import { useState, useContext } from "react";
+import { changeUsername } from "../utils.js";
+import { uidContext } from "./Contexts.js";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ChangeUsername() {
-  const [newUsername, setNewUsername] = useState('');
+  const navigation = useNavigation();
+  const [newUsername, setNewUsername] = useState("");
   const { user, setUser } = useContext(uidContext);
-
 
   function handleChange(text) {
     setNewUsername(text);
@@ -17,16 +18,21 @@ export default function ChangeUsername() {
     setUser((curr) => {
       return { ...curr, name: newUsername };
     });
-    changeUsername(user.uid, newUsername).catch(() =>
-      setUser((curr) => {
-        return { ...curr, name: currUsername };
+    changeUsername(user.uid, newUsername)
+      .then(() => {
+        navigation.navigate("Profile");
       })
-    );
+      .catch(() => {
+        Alert.alert("Failed to update username, please try again!");
+        setUser((curr) => {
+          return { ...curr, name: currUsername };
+        });
+      });
   }
   return (
     <View accessible={true}>
       <Text style={styles.cuText}>
-        Current username: {'\n'}
+        Current username: {"\n"}
         {user.name}
       </Text>
       <TextInput
@@ -41,7 +47,8 @@ export default function ChangeUsername() {
           accessibilityLabel="change username"
           accessibilityHint="Will change your username"
           title="change username"
-          onPress={handlePress}></Button>
+          onPress={handlePress}
+        ></Button>
       </View>
     </View>
   );
