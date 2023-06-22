@@ -173,6 +173,7 @@ export default function MapScreen({ route, navigation }) {
                       disabled={isUnlocked}
                       onPress={() => {
                         setUser((curr) => {
+                          if (enteredCode.length !== 3) return curr;
                           if (enteredCode == map.waypoints[index].code) {
                             const newWp = {
                               ...wpNumbers,
@@ -190,6 +191,10 @@ export default function MapScreen({ route, navigation }) {
                           return curr;
                         });
                         setWpNumbers((curr) => {
+                          if (enteredCode.length !== 3) {
+                            Alert.alert("Please enter a 3 digit code");
+                            return curr;
+                          }
                           if (enteredCode == map.waypoints[index].code) {
                             patchCode(
                               {
