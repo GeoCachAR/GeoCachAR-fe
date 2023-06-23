@@ -1,19 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   cpText: {
     fontSize: 20,
   },
   homeContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     paddingTop: 20,
   },
   userProfileScroll: {
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
   },
   userProfileBtnView: {
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   availableLocations: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 15,
     marginBottom: 15,
     fontSize: 30,
@@ -79,17 +79,17 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
   },
   map: {
-    width: '100%',
-    height: '35%',
+    width: "100%",
+    height: "35%",
   },
   mapScreenDetails: {
     paddingTop: 5,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "flex-end",
     marginTop: 20,
   },
   mapScreenInput: {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingTop: 8,
     paddingBottom: 8,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     fontSize: 20,
   },
   passwordTextField: {
@@ -138,27 +138,39 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   passwordError: {
-    color: 'transparent',
-    backgroundColor: 'transparent',
+    color: "transparent",
+    backgroundColor: "transparent",
   },
   passwordIsError: {
-    color: 'red',
+    color: "red",
   },
   testtest: {
     paddingBottom: 30,
   },
   userProfileDeleteBtnView: {
     marginTop: 50,
-    alignItems: 'center',
+    alignItems: "center",
   },
   submitAllCodesView: {
     marginTop: 30,
     marginBottom: 30,
-    alignItems: 'center',
+    alignItems: "center",
   },
   passwordReset: {
     margin: 20,
-    textAlign: 'center',
+    textAlign: "center",
+  },
+  nths: {
+    margin: 16,
+    marginLeft: 30,
+    fontSize: 20,
+  },
+  nthPirate: {
+    width: 300,
+    height: 250,
+    justifyContent: "center",
+    marginLeft: 50,
+    marginTop: 20,
   },
 });
 
